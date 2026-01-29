@@ -1,5 +1,5 @@
 const AUTH0_DOMAIN = 'neevs.us.auth0.com';
-const AUTH0_CLIENT_ID = 'undefined';
+const AUTH0_CLIENT_ID = 'Yi2sudhWZGz2gIudnRypD8USwo45ztWt';
 const REDIRECT_URI = window.location.origin + '/auth/callback';
 
 class Auth {

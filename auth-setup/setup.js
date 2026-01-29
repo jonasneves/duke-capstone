@@ -79,7 +79,7 @@ const octokit = new Octokit({ auth: config.githubToken });
 console.log('\n🔧 Step 1: Creating Auth0 Application...');
 
 // Create Auth0 application
-const auth0App = await auth0.clients.create({
+const auth0Response = await auth0.clients.create({
   name: `GitHub Pages - ${config.domain}`,
   app_type: 'spa',
   callbacks: [`https://${config.domain}/auth/callback`],
@@ -93,6 +93,7 @@ const auth0App = await auth0.clients.create({
   }
 });
 
+const auth0App = auth0Response.data || auth0Response;
 console.log(`✅ Auth0 app created: ${auth0App.client_id}`);
 
 console.log('\n🔧 Step 2: Enabling Google connection...');
