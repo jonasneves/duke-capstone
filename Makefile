@@ -7,12 +7,14 @@ install: ## Install dependencies
 	npm install
 
 dev: ## Start development server
+	@lsof -ti:5173 | xargs kill -9 2>/dev/null || true
 	npm run dev
 
 build: ## Build for production
 	npm run build
 
 preview: ## Preview production build
+	@lsof -ti:4173 | xargs kill -9 2>/dev/null || true
 	npm run preview
 
 analyze: ## Analyze bundle size
