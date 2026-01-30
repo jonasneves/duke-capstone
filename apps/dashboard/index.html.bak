@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
   <script src="https://oauth.neevs.io/github-auth.js?v=2" integrity="sha384-yCvoyjf6LKk2Yc6oSRenxRV0yFNdjeQ5ANuXIcRN50VoX/X8S4YJ9mU2+cT9MGW1" crossorigin="anonymous"></script>
-  <script id="bootstrap"></script>
   <style>
     body { margin: 0; font-family: system-ui, sans-serif; background: #f5f7fa; }
     .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 20px; text-align: center; }

@@ -1,6 +1,5 @@
 /**
- * GitHub Repository API Abstraction
- * Simplifies interactions with GitHub Contents API
+ * GitHub Repository API Abstraction with Caching
  */
 
 class GitHubRepo {
@@ -9,9 +8,55 @@ class GitHubRepo {
     this.repo = repo;
     this.token = token;
     this.baseUrl = `https://api.github.com/repos/${owner}/${repo}`;
+    this.cacheTimeout = 300000; // 5 minutes
+  }
+
+  getCacheKey(path) {
+    return `gh_${this.owner}_${this.repo}_${path}`;
+  }
+
+  getFromCache(path) {
+    try {
+      const cacheKey = this.getCacheKey(path);
+      const cached = localStorage.getItem(cacheKey);
+      if (!cached) return null;
+
+      const { content, sha, timestamp } = JSON.parse(cached);
+      if (Date.now() - timestamp > this.cacheTimeout) {
+        localStorage.removeItem(cacheKey);
+        return null;
+      }
+
+      return { content, sha, path };
+    } catch (e) {
+      return null;
+    }
+  }
+
+  setCache(path, data) {
+    try {
+      const cacheKey = this.getCacheKey(path);
+      localStorage.setItem(cacheKey, JSON.stringify({
+        content: data.content,
+        sha: data.sha,
+        timestamp: Date.now()
+      }));
+    } catch (e) {
+      console.warn('Cache storage failed:', e);
+    }
+  }
+
+  clearCache() {
+    const prefix = `gh_${this.owner}_${this.repo}_`;
+    Object.keys(localStorage).forEach(key => {
+      if (key.startsWith(prefix)) localStorage.removeItem(key);
+    });
   }
 
   async getFile(path) {
+    const cached = this.getFromCache(path);
+    if (cached) return cached;
+
     const response = await fetch(`${this.baseUrl}/contents/${path}`, {
       headers: {
         'Authorization': `Bearer ${this.token}`,
@@ -24,13 +69,16 @@ class GitHubRepo {
     }
 
     const data = await response.json();
-    return {
+    const result = {
       content: atob(data.content),
       sha: data.sha,
       path: data.path,
       name: data.name,
       size: data.size
     };
+
+    this.setCache(path, result);
+    return result;
   }
 
   async updateFile(path, content, sha, message) {
@@ -51,6 +99,7 @@ class GitHubRepo {
       throw new Error(`Failed to update ${path}: ${response.statusText}`);
     }
 
+    localStorage.removeItem(this.getCacheKey(path));
     return response.json();
   }
 
@@ -91,6 +140,7 @@ class GitHubRepo {
       throw new Error(`Failed to delete ${path}: ${response.statusText}`);
     }
 
+    localStorage.removeItem(this.getCacheKey(path));
     return response.json();
   }
 
@@ -119,7 +169,6 @@ class GitHubRepo {
   }
 }
 
-// Global instance (initialized after auth)
 window.repo = null;
 
 function initRepo(token) {
