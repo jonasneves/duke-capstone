@@ -24,10 +24,6 @@ export default function ChatApp() {
   const [isLoading, setIsLoading] = useState(false);
   const { setCustomItems, clearCustomItems } = useUserMenu();
 
-  useEffect(() => {
-    endTimer('ttfr');
-  }, [endTimer]);
-
   const handleClearChat = useCallback(() => {
     if (confirm('Clear all chat history?')) {
       clearMessages();
