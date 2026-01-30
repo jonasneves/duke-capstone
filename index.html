@@ -148,10 +148,30 @@
           <h3>${app.name}</h3>
           <p>${app.description}</p>
           <div class="app-meta">${tech}</div>
-          <a href="apps/${app.slug}/">Launch App →</a>
+          <a href="#" onclick="loadApp('${app.path}'); return false;">Launch App →</a>
         </div>
       `;
       document.getElementById('app-grid').appendChild(card);
+    }
+
+    async function loadApp(appPath) {
+      try {
+        const file = await repo.getFile(`${appPath}/index.html`);
+        document.body.innerHTML = file.content;
+
+        const scripts = document.body.getElementsByTagName('script');
+        for (let script of scripts) {
+          const newScript = document.createElement('script');
+          if (script.src) {
+            newScript.src = script.src;
+          } else {
+            newScript.textContent = script.textContent;
+          }
+          document.body.appendChild(newScript);
+        }
+      } catch (error) {
+        alert(`Error loading app: ${error.message}`);
+      }
     }
 
     function logout() {
