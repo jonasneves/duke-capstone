@@ -51,7 +51,7 @@ export function UserMenu({ user, onLogout, onClearCache }: UserMenuProps) {
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Open user menu"
         aria-expanded={isOpen}
-        className="group relative flex items-center gap-0 group-hover:gap-4 bg-white/80 backdrop-blur-md border border-neutral-200 rounded-full p-1 group-hover:pl-2 group-hover:pr-7 hover:bg-white transition-all duration-200 shadow-sm overflow-hidden"
+        className="group relative flex items-center gap-2 bg-white/80 backdrop-blur-md border border-neutral-200 rounded-full pl-1 pr-1 group-hover:pr-3 hover:bg-white transition-[padding,background-color] duration-300 ease-out shadow-sm"
       >
         {user ? (
           <>
@@ -61,7 +61,7 @@ export function UserMenu({ user, onLogout, onClearCache }: UserMenuProps) {
               loading="lazy"
               className="w-10 h-10 rounded-full ring-2 ring-white flex-shrink-0"
             />
-            <span className="text-sm font-medium text-neutral-600 whitespace-nowrap w-0 group-hover:w-auto pl-0 group-hover:pl-1 pr-0 group-hover:pr-1 opacity-0 group-hover:opacity-100 transition-all duration-200">{user.name?.split(' ')[0] || user.login}</span>
+            <span className="text-sm font-medium text-neutral-600 whitespace-nowrap max-w-0 group-hover:max-w-[120px] overflow-hidden opacity-0 group-hover:opacity-100 transition-[max-width,opacity] duration-300 ease-out">{user.name?.split(' ')[0] || user.login}</span>
           </>
         ) : (
           <>
@@ -69,7 +69,7 @@ export function UserMenu({ user, onLogout, onClearCache }: UserMenuProps) {
               <Github size={20} className="text-neutral-600" />
             </div>
             <AlertCircle size={14} className="absolute -top-0.5 -right-0.5 text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-            <span className="text-sm font-medium text-neutral-600 whitespace-nowrap w-0 group-hover:w-auto pl-0 group-hover:pl-1 pr-0 group-hover:pr-1 opacity-0 group-hover:opacity-100 transition-all duration-200">Not logged in</span>
+            <span className="text-sm font-medium text-neutral-600 whitespace-nowrap max-w-0 group-hover:max-w-[120px] overflow-hidden opacity-0 group-hover:opacity-100 transition-[max-width,opacity] duration-300 ease-out">Not logged in</span>
           </>
         )}
       </button>

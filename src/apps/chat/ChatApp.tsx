@@ -90,6 +90,13 @@ export default function ChatApp() {
     setIsLoading(true);
     addMessage('user', content);
 
+    const streamingMessageId = `${Date.now()}-${Math.random()}`;
+    const streamingMessage: Message = {
+      role: 'assistant',
+      content: '',
+      id: streamingMessageId
+    };
+
     try {
       startTimer('api_latency_ms');
       const response = await fetch('https://models.inference.ai.azure.com/chat/completions', {
@@ -100,7 +107,6 @@ export default function ChatApp() {
         },
         body: JSON.stringify({
           model: selectedModel,
-          // Only send last 20 messages to avoid bandwidth waste (10 exchanges)
           messages: [...messages, { role: 'user', content }]
             .slice(-20)
             .map(m => ({
@@ -108,7 +114,8 @@ export default function ChatApp() {
               content: m.content
             })),
           temperature: 0.7,
-          max_tokens: 1000
+          max_tokens: 1000,
+          stream: true
         })
       });
 
@@ -117,17 +124,50 @@ export default function ChatApp() {
         throw new Error(error.error?.message || `API error: ${response.status}`);
       }
 
-      const data = await response.json();
-      const reply = data.choices[0].message.content;
-      endTimer('api_latency_ms');
+      setMessages(prev => [...prev, streamingMessage]);
 
-      addMessage('assistant', reply);
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+      let accumulatedContent = '';
+
+      if (!reader) throw new Error('No response body');
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split('\n').filter(line => line.trim().startsWith('data:'));
+
+        for (const line of lines) {
+          const data = line.replace(/^data:\s*/, '').trim();
+          if (data === '[DONE]') continue;
+
+          try {
+            const parsed = JSON.parse(data);
+            const delta = parsed.choices?.[0]?.delta?.content;
+            if (delta) {
+              accumulatedContent += delta;
+              setMessages(prev => prev.map(msg =>
+                msg.id === streamingMessageId
+                  ? { ...msg, content: accumulatedContent }
+                  : msg
+              ));
+            }
+          } catch (e) {
+            // Skip malformed JSON chunks
+          }
+        }
+      }
+
+      endTimer('api_latency_ms');
     } catch (error: any) {
       addMessage('system', `Error: ${error.message}`);
+      setMessages(prev => prev.filter(msg => msg.id !== streamingMessageId));
     } finally {
       setIsLoading(false);
     }
-  }, [token, selectedModel, messages, isLoading, addMessage, startTimer, endTimer]);
+  }, [token, selectedModel, messages, isLoading, addMessage, startTimer, endTimer, setMessages]);
 
   return (
     <div className="h-screen flex flex-col bg-neutral-100">
