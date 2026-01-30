@@ -34,11 +34,11 @@ export function OAuth({
   useEffect(() => {
     // Check if we're handling an OAuth callback or already have auth
     const urlParams = new URLSearchParams(window.location.search);
-    const hasOAuthCallback = urlParams.has('code') || urlParams.has('state');
-    const hasStoredAuth = localStorage.getItem('github_token');
+    const hasTokenCallback = urlParams.has('token') || urlParams.has('error');
+    const hasStoredAuth = localStorage.getItem('gh_token');
 
     // Only load script if we need it (callback or existing auth)
-    if (!hasOAuthCallback && !hasStoredAuth) {
+    if (!hasTokenCallback && !hasStoredAuth) {
       setIsLoading(false);
       return;
     }
@@ -76,9 +76,9 @@ export function OAuth({
   useEffect(() => {
     if (!scriptLoaded) return;
 
-    // Check if we're handling an OAuth callback (returning from GitHub)
+    // Check if we're handling an OAuth callback (returning from OAuth proxy)
     const urlParams = new URLSearchParams(window.location.search);
-    const hasOAuthCallback = urlParams.has('code') || urlParams.has('state');
+    const hasTokenCallback = urlParams.has('token') || urlParams.has('error');
 
     if (window.GitHubAuth.isAuthenticated()) {
       const user = window.GitHubAuth.getUser();
@@ -90,10 +90,11 @@ export function OAuth({
           setIsLoading(false);
         }, 0);
       }
-    } else if (hasOAuthCallback) {
+    } else if (hasTokenCallback) {
       // Only initialize if we're processing an OAuth callback
       window.GitHubAuth.init({
         scope: 'repo',
+        autoRedirect: false,
         onLogin: (token: string) => {
           const user = window.GitHubAuth.getUser();
           if (user) {
