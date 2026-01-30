@@ -112,14 +112,14 @@
       <span id="userName"></span>
     </div>
     <div>
-      <button class="btn btn-secondary" style="margin-right: 8px;" onclick="location.reload()" title="Refresh gallery">🔄</button>
-      <button class="btn btn-secondary" style="margin-right: 8px;" onclick="clearAllCache()" title="Clear cache">🗑️</button>
+      <button class="btn btn-secondary" style="margin-right: 8px;" onclick="location.reload()" title="Refresh gallery">&#x1F504;</button>
+      <button class="btn btn-secondary" style="margin-right: 8px;" onclick="clearAllCache()" title="Clear cache">&#x1F5D1;&#xFE0F;</button>
       <button class="btn btn-danger" onclick="logout()">Logout</button>
     </div>
   </div>
 
   <div class="header">
-    <h1>🚀 Prototype Gallery</h1>
+    <h1>&#x1F680; Prototype Gallery</h1>
     <p>Your private collection of experimental applications</p>
   </div>
 
@@ -242,7 +242,7 @@
       const versionWarning = checkVersionCompatibility(manifest);
 
       const tech = manifest.tech ? manifest.tech.map(t => `<span class="badge">${t}</span>`).join('') : '';
-      const warning = versionWarning ? `<div style="color: #ff9800; font-size: 12px; margin-bottom: 8px;">⚠️ ${versionWarning}</div>` : '';
+      const warning = versionWarning ? `<div style="color: #ff9800; font-size: 12px; margin-bottom: 8px;">&#x26A0;&#xFE0F; ${versionWarning}</div>` : '';
 
       card.innerHTML = `
         <img src="${manifest.thumbnail || ''}" alt="${manifest.name}" onerror="this.style.display='none'">
@@ -251,7 +251,7 @@
           <p>${manifest.description}</p>
           ${warning}
           <div class="app-meta">${tech}</div>
-          <a onclick="loadApp('${path}', '${manifest.name}'); return false;">Launch App →</a>
+          <a onclick="loadApp('${path}', '${manifest.name}'); return false;">Launch App &rarr;</a>
         </div>
       `;
     }
