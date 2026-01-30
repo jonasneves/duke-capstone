@@ -27,16 +27,16 @@
   <div class="container">
     <div class="grid">
       <div class="card">
-        <h3>Total Files</h3>
-        <div class="value" id="file-count">-</div>
-      </div>
-      <div class="card">
         <h3>Applications</h3>
         <div class="value" id="app-count">-</div>
       </div>
       <div class="card">
-        <h3>Content Items</h3>
-        <div class="value" id="content-count">-</div>
+        <h3>Shared Utilities</h3>
+        <div class="value" id="util-count">-</div>
+      </div>
+      <div class="card">
+        <h3>Root Files</h3>
+        <div class="value" id="file-count">-</div>
       </div>
     </div>
 
@@ -69,16 +69,20 @@
 
     async function loadStats() {
       try {
-        const [rootFiles, apps, content] = await Promise.all([
+        const [rootFiles, apps, shared] = await Promise.all([
           repo.listDirectory(''),
           repo.listDirectory('apps'),
-          repo.listDirectory('content')
+          repo.listDirectory('shared')
         ]);
 
-        document.getElementById('file-count').textContent = rootFiles.length;
-        document.getElementById('app-count').textContent = apps.filter(a => a.type === 'dir').length;
-        document.getElementById('content-count').textContent = content.length;
-        document.getElementById('activity').textContent = `Repository contains ${rootFiles.length} files across multiple directories. Last checked: ${new Date().toLocaleString()}`;
+        const appDirs = apps.filter(a => a.type === 'dir');
+        const sharedDirs = shared.filter(a => a.type === 'dir');
+        const rootFileCount = rootFiles.filter(f => f.type === 'file').length;
+
+        document.getElementById('app-count').textContent = appDirs.length;
+        document.getElementById('util-count').textContent = sharedDirs.length;
+        document.getElementById('file-count').textContent = rootFileCount;
+        document.getElementById('activity').textContent = `Repository contains ${appDirs.length} apps, ${sharedDirs.length} shared modules, and ${rootFileCount} root files. Last checked: ${new Date().toLocaleString()}`;
       } catch (error) {
         document.getElementById('activity').textContent = `Error: ${error.message}`;
       }
