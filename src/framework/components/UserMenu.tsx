@@ -66,10 +66,10 @@ export function UserMenu({ user, onLogout, onClearCache }: UserMenuProps) {
       <div className={`absolute top-14 right-0 bg-white border border-neutral-200 rounded-2xl shadow-xl min-w-[200px] overflow-hidden transition-all duration-100 ${isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
         <button
           onClick={handleHome}
-          aria-label="Go to home"
+          aria-label="Go to app gallery"
           className="w-full flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors"
         >
-          <Home size={16} /> Home
+          <Home size={16} /> Gallery
         </button>
 
         <button

@@ -136,7 +136,13 @@ export default function ChatApp() {
   return (
     <div className="h-screen flex flex-col bg-neutral-100">
       <div className="bg-brand-500 px-6 py-3.5">
-        <h1 className="text-lg font-bold text-white">AI Chat</h1>
+        <button
+          onClick={handleClearChat}
+          className="text-lg font-bold text-white hover:text-white/90 transition-colors duration-100"
+          title="Click to clear chat"
+        >
+          AI Chat
+        </button>
       </div>
 
       <div className="flex-1 flex justify-center p-6 overflow-hidden">

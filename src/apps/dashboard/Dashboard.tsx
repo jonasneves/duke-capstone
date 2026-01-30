@@ -99,10 +99,14 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <div className="bg-white border-b border-neutral-200 px-6 py-8 text-center">
+      <button
+        onClick={loadStats}
+        className="w-full bg-white border-b border-neutral-200 px-6 py-8 text-center hover:bg-neutral-50 transition-colors duration-100"
+        title="Click to refresh"
+      >
         <h1 className="text-3xl font-semibold text-neutral-900 mb-2">Dashboard</h1>
         <p className="text-neutral-600">Repository Statistics</p>
-      </div>
+      </button>
 
       <div className="max-w-4xl mx-auto px-6 py-8 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

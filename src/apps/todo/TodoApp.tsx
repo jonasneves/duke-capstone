@@ -50,17 +50,21 @@ export default function TodoApp() {
   return (
     <div className="min-h-screen bg-neutral-50">
       <div className="bg-white border-b border-neutral-200 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+        <button
+          onClick={() => setFilter('all')}
+          className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-100"
+          title="Click to show all tasks"
+        >
           <div className="w-10 h-10 bg-brand-100 rounded-xl flex items-center justify-center">
             <ListTodo className="text-brand-600" size={22} />
           </div>
-          <div>
+          <div className="text-left">
             <h1 className="text-xl font-semibold text-neutral-900">Todo App</h1>
             <p className="text-sm text-neutral-500">
               {activeCount} active, {completedCount} completed
             </p>
           </div>
-        </div>
+        </button>
         <button
           onClick={() => navigate('/')}
           className="px-4 py-2 text-sm text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors"
