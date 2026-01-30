@@ -8,7 +8,7 @@ export const AppConfig = {
 
   branding: {
     title: 'Playground',
-    subtitle: 'Your experimental app workspace',
+    subtitle: 'Multi-app launcher powered by GitHub API',
     theme: {
       primary: '#6366f1',
       secondary: '#8b5cf6'
