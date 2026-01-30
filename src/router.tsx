@@ -43,7 +43,8 @@ function AppWrapper({ appName, children }: { appName: string; children: React.Re
         if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
           return;
         }
-        window.location.hash = '/gallery';
+        // Use href to force full page reload (fixes chat app state issue)
+        window.location.href = window.location.href.split('#')[0] + '#/gallery';
       }
     };
 

@@ -41,7 +41,8 @@ export function UserMenu({ user, onLogout, onClearCache }: UserMenuProps) {
 
   const handleHome = () => {
     setIsOpen(false);
-    window.location.hash = '/gallery';
+    // Use href to force full page reload (fixes chat app state issue)
+    window.location.href = window.location.href.split('#')[0] + '#/gallery';
   };
 
   if (!user) return null;
