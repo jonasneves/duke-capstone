@@ -1,4 +1,4 @@
-import { useState, memo, useCallback } from 'react';
+import { useState, memo, useCallback, type ReactElement } from 'react';
 import { Folder, FileText } from 'lucide-react';
 import type { FileNode } from './types';
 
@@ -23,7 +23,6 @@ const TreeItem = memo(function TreeItem({
   level,
   isOpen,
   isSelected,
-  hasChildren,
   onToggle,
   onSelect,
 }: {
@@ -31,7 +30,6 @@ const TreeItem = memo(function TreeItem({
   level: number;
   isOpen: boolean;
   isSelected: boolean;
-  hasChildren: boolean;
   onToggle?: () => void;
   onSelect?: () => void;
 }) {
@@ -99,7 +97,7 @@ export function FileTree({ files, onFileSelect, selectedFile, onLoadDirectory }:
     });
   }, [onLoadDirectory]);
 
-  const renderItem = useCallback((item: FileNode, level = 0): JSX.Element => {
+  const renderItem = useCallback((item: FileNode, level = 0): ReactElement => {
     const isDir = item.type === 'dir';
     const dirState = directories[item.path];
     const isOpen = dirState?.isOpen || false;
@@ -113,7 +111,6 @@ export function FileTree({ files, onFileSelect, selectedFile, onLoadDirectory }:
             level={level}
             isOpen={isOpen}
             isSelected={false}
-            hasChildren={dirState?.children?.length > 0}
             onToggle={() => toggleDirectory(item)}
           />
           {isOpen && dirState?.children?.length > 0 && (
@@ -132,7 +129,6 @@ export function FileTree({ files, onFileSelect, selectedFile, onLoadDirectory }:
         level={level}
         isOpen={false}
         isSelected={isSelected}
-        hasChildren={false}
         onSelect={() => onFileSelect(item)}
       />
     );
