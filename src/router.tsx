@@ -5,6 +5,7 @@ import { useAnalyticsStore, useAuthStore, useCacheStore } from '@/stores';
 import { NotFound } from '@/components/NotFound';
 import { UserMenu } from '@/framework/components/UserMenu';
 import { AppConfig } from '@/config/app';
+import App from './App';
 
 const ChatApp = lazy(() => import('./apps/chat/ChatApp'));
 const CMSApp = lazy(() => import('./apps/cms/CMSApp'));
@@ -52,10 +53,7 @@ export const router = createHashRouter([
   },
   {
     path: '/gallery',
-    lazy: async () => {
-      const App = await import('./App');
-      return { Component: App.default };
-    }
+    element: <App />
   },
   {
     path: '/apps/chat',

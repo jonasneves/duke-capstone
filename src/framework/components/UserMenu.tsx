@@ -40,8 +40,8 @@ export function UserMenu({ user, onLogout, onClearCache }: UserMenuProps) {
   };
 
   const handleHome = () => {
-    setIsOpen(false);
     navigate('/gallery');
+    setIsOpen(false);
   };
 
   if (!user) return null;
