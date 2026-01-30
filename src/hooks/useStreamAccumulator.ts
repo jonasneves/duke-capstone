@@ -67,12 +67,8 @@ export function useStreamAccumulator<T>(
       if (rafRef.current !== undefined) {
         cancelAnimationFrame(rafRef.current);
       }
-      // Flush any remaining items
-      if (bufferRef.current.length > 0) {
-        onFlush(bufferRef.current);
-      }
     };
-  }, [onFlush]);
+  }, []);
 
   return { accumulate, flush };
 }

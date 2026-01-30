@@ -20,9 +20,11 @@ export default function ChatApp() {
   }, [endTimer]);
 
   // RAF batching for message updates
-  const { accumulate } = useStreamAccumulator<Message>((newMessages) => {
+  const handleFlush = useCallback((newMessages: Message[]) => {
     setMessages(prev => [...prev, ...newMessages]);
-  });
+  }, [setMessages]);
+
+  const { accumulate } = useStreamAccumulator<Message>(handleFlush);
 
   const addMessage = useCallback((role: Message['role'], content: string) => {
     const message: Message = {
@@ -83,9 +85,9 @@ export default function ChatApp() {
 
   return (
     <div className="h-screen flex flex-col bg-neutral-50">
-      <div className="bg-white border-b border-neutral-200 px-6 py-4">
-        <h1 className="text-2xl font-semibold text-neutral-900">AI Chat</h1>
-        <p className="text-sm text-neutral-600">Powered by GitHub Models</p>
+      <div className="bg-white border-b border-neutral-100 px-6 py-4">
+        <h1 className="text-xl font-semibold text-neutral-900">AI Chat</h1>
+        <p className="text-sm text-neutral-500">Powered by GitHub Models</p>
       </div>
 
       <ModelSelector

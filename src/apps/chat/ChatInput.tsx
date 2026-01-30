@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { ArrowUp } from 'lucide-react';
 
 interface ChatInputProps {
   onSend: (message: string) => void;
@@ -32,7 +33,7 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
   };
 
   return (
-    <div className="border-t border-neutral-200 bg-white px-6 py-4 flex items-center gap-3">
+    <div className="bg-neutral-50 px-6 py-6 flex items-center gap-3 max-w-4xl mx-auto">
       <input
         ref={inputRef}
         type="text"
@@ -42,15 +43,16 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
         onKeyDown={handleKeyDown}
         placeholder="Type your message..."
         disabled={disabled}
-        className="flex-1 px-4 py-2.5 border border-neutral-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 disabled:bg-neutral-100 disabled:text-neutral-400"
+        className="flex-1 px-6 py-4 bg-white border border-neutral-200 rounded-full text-base focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:border-neutral-300 disabled:bg-neutral-100 disabled:text-neutral-400 shadow-sm"
       />
       <button
         onClick={handleSend}
         disabled={disabled || !input.trim()}
         id="send-btn"
-        className="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-lg font-medium text-sm transition-colors disabled:bg-neutral-300 disabled:cursor-not-allowed"
+        className="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-neutral-900 hover:bg-neutral-800 text-white rounded-full transition-colors disabled:bg-neutral-300 disabled:cursor-not-allowed shadow-sm"
+        aria-label="Send message"
       >
-        Send
+        <ArrowUp size={20} />
       </button>
     </div>
   );

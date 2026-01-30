@@ -29,7 +29,7 @@ export function MessageList({ messages }: MessageListProps) {
   return (
     <div
       ref={containerRef}
-      className="flex-1 overflow-y-auto px-6 py-4 space-y-4"
+      className="flex-1 overflow-y-auto px-6 py-6 space-y-4 max-w-4xl mx-auto w-full"
       id="chat"
       onScroll={handleScroll}
     >
