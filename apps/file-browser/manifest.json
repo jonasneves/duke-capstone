@@ -1,0 +1,10 @@
+{
+  "name": "File Browser",
+  "slug": "file-browser",
+  "description": "Browse and manage files in the private repository",
+  "version": "1.0.0",
+  "tech": ["Vanilla JS"],
+  "entry": "index.html",
+  "status": "active",
+  "lastUpdated": "2026-01-30"
+}

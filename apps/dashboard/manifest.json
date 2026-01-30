@@ -1,0 +1,10 @@
+{
+  "name": "Simple Dashboard",
+  "slug": "dashboard",
+  "description": "Example dashboard showing repository stats and recent activity",
+  "version": "1.0.0",
+  "tech": ["Vanilla JS"],
+  "entry": "index.html",
+  "status": "active",
+  "lastUpdated": "2026-01-30"
+}
