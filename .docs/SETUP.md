@@ -110,8 +110,6 @@ Your Site (capstone.neevs.io)
   GitHub OAuth
 ```
 
-## Architecture
-
 **Branch Strategy:**
 - `main` - Private branch with protected content in `/content/`
 - `gh-pages` - Public branch with only shell (index.html, CNAME)
