@@ -49,7 +49,7 @@ export default function TodoApp() {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <div className="bg-white border-b border-neutral-200 px-6 py-4 flex items-center justify-between">
+      <div className="bg-white border-b border-neutral-200 px-6 py-4">
         <button
           onClick={() => setFilter('all')}
           className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-100"
@@ -64,12 +64,6 @@ export default function TodoApp() {
               {activeCount} active, {completedCount} completed
             </p>
           </div>
-        </button>
-        <button
-          onClick={() => navigate('/')}
-          className="px-4 py-2 text-sm text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors"
-        >
-          ← Back
         </button>
       </div>
 

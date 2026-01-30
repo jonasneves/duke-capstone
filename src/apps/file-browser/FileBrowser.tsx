@@ -50,14 +50,8 @@ export default function FileBrowser() {
   if (isLoading && files.length === 0) {
     return (
       <div className="min-h-screen bg-neutral-50">
-        <div className="bg-white border-b border-neutral-200 px-6 py-4 flex items-center justify-between">
+        <div className="bg-white border-b border-neutral-200 px-6 py-4">
           <h2 className="text-2xl font-semibold text-neutral-900">File Browser</h2>
-          <button
-            className="px-4 py-2 bg-white hover:bg-neutral-100 border border-neutral-300 text-neutral-700 rounded-lg font-medium text-sm transition-colors"
-            onClick={handleBack}
-          >
-            ← Back to Gallery
-          </button>
         </div>
         <div className="max-w-5xl mx-auto px-6 py-8">
           <div className="text-center text-neutral-500 py-8">Loading files...</div>
@@ -69,14 +63,8 @@ export default function FileBrowser() {
   if (error) {
     return (
       <div className="min-h-screen bg-neutral-50">
-        <div className="bg-white border-b border-neutral-200 px-6 py-4 flex items-center justify-between">
+        <div className="bg-white border-b border-neutral-200 px-6 py-4">
           <h2 className="text-2xl font-semibold text-neutral-900">File Browser</h2>
-          <button
-            className="px-4 py-2 bg-white hover:bg-neutral-100 border border-neutral-300 text-neutral-700 rounded-lg font-medium text-sm transition-colors"
-            onClick={handleBack}
-          >
-            ← Back to Gallery
-          </button>
         </div>
         <div className="max-w-5xl mx-auto px-6 py-8">
           <div className="text-center text-red-600 py-8">

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, RefreshCw, Trash2, LogOut, Settings } from 'lucide-react';
+import { Home, RefreshCw, Trash2, LogOut, Settings, Github, AlertCircle } from 'lucide-react';
 import { useUserMenu } from '../contexts/UserMenuContext';
 import type { User } from '../types';
 
@@ -45,23 +45,33 @@ export function UserMenu({ user, onLogout, onClearCache }: UserMenuProps) {
     window.location.href = window.location.href.split('#')[0] + '#/gallery';
   };
 
-  if (!user) return null;
-
   return (
     <div ref={menuRef} className="fixed top-3 right-3 z-50">
       <button
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Open user menu"
         aria-expanded={isOpen}
-        className="group flex items-center gap-0 group-hover:gap-4 bg-white/80 backdrop-blur-md border border-neutral-200 rounded-full p-1 group-hover:pl-2 group-hover:pr-7 hover:bg-white transition-all duration-200 shadow-sm overflow-hidden"
+        className="group relative flex items-center gap-0 group-hover:gap-4 bg-white/80 backdrop-blur-md border border-neutral-200 rounded-full p-1 group-hover:pl-2 group-hover:pr-7 hover:bg-white transition-all duration-200 shadow-sm overflow-hidden"
       >
-        <img
-          src={user.avatar_url}
-          alt={user.login}
-          loading="lazy"
-          className="w-10 h-10 rounded-full ring-2 ring-white flex-shrink-0"
-        />
-        <span className="text-sm font-medium text-neutral-600 whitespace-nowrap w-0 group-hover:w-auto pl-0 group-hover:pl-1 pr-0 group-hover:pr-1 opacity-0 group-hover:opacity-100 transition-all duration-200">{user.name?.split(' ')[0] || user.login}</span>
+        {user ? (
+          <>
+            <img
+              src={user.avatar_url}
+              alt={user.login}
+              loading="lazy"
+              className="w-10 h-10 rounded-full ring-2 ring-white flex-shrink-0"
+            />
+            <span className="text-sm font-medium text-neutral-600 whitespace-nowrap w-0 group-hover:w-auto pl-0 group-hover:pl-1 pr-0 group-hover:pr-1 opacity-0 group-hover:opacity-100 transition-all duration-200">{user.name?.split(' ')[0] || user.login}</span>
+          </>
+        ) : (
+          <>
+            <div className="w-10 h-10 rounded-full bg-neutral-100 ring-2 ring-white flex items-center justify-center flex-shrink-0">
+              <Github size={20} className="text-neutral-600" />
+            </div>
+            <AlertCircle size={14} className="absolute -top-0.5 -right-0.5 text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+            <span className="text-sm font-medium text-neutral-600 whitespace-nowrap w-0 group-hover:w-auto pl-0 group-hover:pl-1 pr-0 group-hover:pr-1 opacity-0 group-hover:opacity-100 transition-all duration-200">Not logged in</span>
+          </>
+        )}
       </button>
 
       <div className={`absolute top-14 right-0 bg-white border border-neutral-200 rounded-2xl shadow-xl min-w-[200px] overflow-hidden transition-all duration-100 ${isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
@@ -81,13 +91,15 @@ export function UserMenu({ user, onLogout, onClearCache }: UserMenuProps) {
           <RefreshCw size={16} /> Refresh
         </button>
 
-        <button
-          onClick={handleSettings}
-          aria-label="Open settings"
-          className="w-full flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors border-t border-neutral-100"
-        >
-          <Settings size={16} /> Settings
-        </button>
+        {user && (
+          <button
+            onClick={handleSettings}
+            aria-label="Open settings"
+            className="w-full flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors border-t border-neutral-100"
+          >
+            <Settings size={16} /> Settings
+          </button>
+        )}
 
         {customItems.length > 0 && (
           <>
@@ -125,13 +137,15 @@ export function UserMenu({ user, onLogout, onClearCache }: UserMenuProps) {
           <Trash2 size={16} /> Clear Cache
         </button>
 
-        <button
-          onClick={onLogout}
-          aria-label="Log out"
-          className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors border-t border-neutral-100"
-        >
-          <LogOut size={16} /> Logout
-        </button>
+        {user && (
+          <button
+            onClick={onLogout}
+            aria-label="Log out"
+            className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors border-t border-neutral-100"
+          >
+            <LogOut size={16} /> Logout
+          </button>
+        )}
       </div>
     </div>
   );

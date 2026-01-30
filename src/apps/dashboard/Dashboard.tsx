@@ -120,14 +120,6 @@ export default function Dashboard() {
           <p className="text-sm text-neutral-600 leading-relaxed">{activityMessage}</p>
         </div>
 
-        <div className="text-center">
-          <button
-            className="px-5 py-2.5 bg-white hover:bg-neutral-100 border border-neutral-300 text-neutral-700 rounded-lg font-medium text-sm transition-colors"
-            onClick={handleBack}
-          >
-            ← Back to Gallery
-          </button>
-        </div>
       </div>
     </div>
   );

@@ -112,25 +112,8 @@ export default function CMSApp() {
 
   return (
     <div className="flex flex-col h-screen bg-neutral-50">
-      <div className="bg-white border-b border-neutral-200 px-6 py-4 flex items-center justify-between">
+      <div className="bg-white border-b border-neutral-200 px-6 py-4">
         <h2 className="text-2xl font-semibold text-neutral-900">Content Manager</h2>
-        <div className="flex items-center gap-2">
-          <button
-            className="inline-flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-lg font-medium text-sm transition-colors disabled:bg-neutral-300 disabled:cursor-not-allowed"
-            onClick={handleSave}
-            disabled={!isDirty || isSaving}
-          >
-            <Save size={16} />
-            {isSaving ? 'Saving...' : 'Save'}
-          </button>
-          <button
-            className="inline-flex items-center gap-2 px-4 py-2 bg-white hover:bg-neutral-100 border border-neutral-300 text-neutral-700 rounded-lg font-medium text-sm transition-colors"
-            onClick={handleClose}
-          >
-            <X size={16} />
-            Close
-          </button>
-        </div>
       </div>
 
       <div className="flex flex-1 overflow-hidden">
@@ -164,6 +147,25 @@ export default function CMSApp() {
             isMarkdown={isMarkdown}
           />
         </div>
+      </div>
+
+      {/* Floating Action Buttons */}
+      <div className="fixed bottom-6 right-6 flex items-center gap-2 z-40">
+        <button
+          className="inline-flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-lg font-medium text-sm transition-colors shadow-lg disabled:bg-neutral-300 disabled:cursor-not-allowed"
+          onClick={handleSave}
+          disabled={!isDirty || isSaving}
+        >
+          <Save size={16} />
+          {isSaving ? 'Saving...' : 'Save'}
+        </button>
+        <button
+          className="inline-flex items-center gap-2 px-4 py-2 bg-white hover:bg-neutral-100 border border-neutral-300 text-neutral-700 rounded-lg font-medium text-sm transition-colors shadow-lg"
+          onClick={handleClose}
+        >
+          <X size={16} />
+          Close
+        </button>
       </div>
     </div>
   );
