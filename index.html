@@ -12,21 +12,9 @@
       padding: 0 20px;
       line-height: 1.6;
     }
+
     h1 { color: #001A57; }
-    .user-info {
-      background: #e8f5e9;
-      border-left: 4px solid #4caf50;
-      padding: 16px;
-      margin: 24px 0;
-      border-radius: 4px;
-    }
-    .user-info img {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      vertical-align: middle;
-      margin-right: 12px;
-    }
+
     button {
       background: #24292e;
       color: white;
@@ -37,12 +25,15 @@
       cursor: pointer;
     }
     button:hover { background: #000; }
+
     .loading {
       color: #666;
       text-align: center;
       padding: 40px;
     }
+
     .error {
+      display: none;
       background: #ffebee;
       border-left: 4px solid #f44336;
       padding: 16px;
@@ -50,12 +41,33 @@
       border-radius: 4px;
       color: #c62828;
     }
+
     .content {
       display: none;
     }
     .content.visible {
       display: block;
     }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #e8f5e9;
+      border-left: 4px solid #4caf50;
+      padding: 16px;
+      margin: 24px 0;
+      border-radius: 4px;
+    }
+    .user-info img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+    }
+    .user-info button {
+      margin-left: auto;
+    }
+
     #protectedContent {
       margin-top: 24px;
       padding: 20px;
@@ -64,6 +76,9 @@
     }
     #protectedContent h1:first-child {
       margin-top: 0;
+    }
+    #protectedContent .placeholder {
+      color: #666;
     }
   </style>
 </head>
@@ -74,97 +89,64 @@
     <p>Authenticating...</p>
   </div>
 
-  <div id="error" class="error" style="display:none;"></div>
+  <div id="error" class="error"></div>
 
   <div id="content" class="content">
     <div class="user-info">
       <img id="userAvatar" src="" alt="User avatar">
-      <span>
-        <strong>Authenticated as:</strong> <span id="userName"></span> (@<span id="userLogin"></span>)
-      </span>
-      <button onclick="GitHubAuth.logout()" style="float: right;">Logout</button>
+      <span><strong>Authenticated as:</strong> <span id="userName"></span> (@<span id="userLogin"></span>)</span>
+      <button onclick="GitHubAuth.logout()">Logout</button>
     </div>
 
     <div id="protectedContent">
-      <p style="color: #666;">Loading protected content...</p>
+      <p class="placeholder">Loading protected content...</p>
     </div>
   </div>
 
   <script
-    src="https://oauth.neevs.io/github-auth.js"
-    integrity="sha384-xjyIjlLvlDtUo/qI+yzJfTB6+jl9A7tHTRaGO9CwUa2C9llsA7A5pFDsO3ATKKdu"
+    src="https://oauth.neevs.io/github-auth.js?v=2"
+    integrity="sha384-yCvoyjf6LKk2Yc6oSRenxRV0yFNdjeQ5ANuXIcRN50VoX/X8S4YJ9mU2+cT9MGW1"
     crossorigin="anonymous">
   </script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
-    // Repository configuration
-    const REPO_OWNER = 'jonasneves';
-    const REPO_NAME = 'duke-capstone';
-    const CONTENT_PATH = 'content/main.md';
+    const CONTENT_URL = 'https://api.github.com/repos/jonasneves/duke-capstone/contents/content/main.md';
 
     async function fetchProtectedContent(token) {
-      try {
-        const response = await fetch(
-          `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${CONTENT_PATH}`,
-          {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Accept': 'application/vnd.github.v3+json'
-            }
-          }
-        );
-
-        if (!response.ok) {
-          if (response.status === 404) {
-            throw new Error('Content not found or you do not have access to this repository.');
-          }
-          throw new Error(`Failed to fetch content: ${response.status} ${response.statusText}`);
+      const response = await fetch(CONTENT_URL, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github.v3+json'
         }
+      });
 
-        const data = await response.json();
-
-        // GitHub returns content as base64
-        const content = atob(data.content);
-
-        // Convert markdown to HTML
-        const html = marked.parse(content);
-
-        document.getElementById('protectedContent').innerHTML = html;
-
-      } catch (error) {
-        console.error('Error fetching content:', error);
-        document.getElementById('protectedContent').innerHTML = `
-          <div class="error">
-            <strong>Error:</strong> ${error.message}
-          </div>
-        `;
+      if (!response.ok) {
+        const message = response.status === 404
+          ? 'Content not found or you do not have access to this repository.'
+          : `Failed to fetch content: ${response.status} ${response.statusText}`;
+        throw new Error(message);
       }
+
+      const data = await response.json();
+      const content = atob(data.content);
+      document.getElementById('protectedContent').innerHTML = marked.parse(content);
     }
 
-    // Initialize GitHub authentication
     GitHubAuth.init({
+      autoRedirect: true,
+
       onLogin: async (user) => {
-        // Hide loading, show content
         document.getElementById('loading').style.display = 'none';
         document.getElementById('content').classList.add('visible');
-
-        // Populate user info
         document.getElementById('userAvatar').src = user.avatar_url;
         document.getElementById('userName').textContent = user.name || 'N/A';
         document.getElementById('userLogin').textContent = user.login;
 
-        // Fetch protected content from private repo
-        const token = GitHubAuth.getToken();
-        await fetchProtectedContent(token);
-
-        console.log('User logged in:', user);
-      },
-
-      onLogout: () => {
-        console.log('User logged out');
-      },
-
-      autoRedirect: true
+        fetchProtectedContent(GitHubAuth.getToken()).catch((error) => {
+          document.getElementById('protectedContent').innerHTML =
+            `<div class="error" style="display:block;"><strong>Error:</strong> ${error.message}</div>`;
+        });
+      }
     });
   </script>
 </body>
