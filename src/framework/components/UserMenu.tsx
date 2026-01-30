@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { RefreshCw, Trash2, LogOut, Settings } from 'lucide-react';
+import { Home, RefreshCw, Trash2, LogOut, Settings } from 'lucide-react';
 import type { User } from '../types';
 
 interface UserMenuProps {
@@ -37,6 +37,11 @@ export function UserMenu({ user, onLogout, onClearCache }: UserMenuProps) {
     navigate('/settings');
   };
 
+  const handleHome = () => {
+    setIsOpen(false);
+    navigate('/gallery');
+  };
+
   if (!user) return null;
 
   return (
@@ -58,9 +63,17 @@ export function UserMenu({ user, onLogout, onClearCache }: UserMenuProps) {
 
       <div className={`absolute top-14 right-0 bg-white border border-neutral-200 rounded-2xl shadow-xl min-w-[200px] overflow-hidden transition-all duration-200 ${isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
         <button
+          onClick={handleHome}
+          aria-label="Go to home"
+          className="w-full flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors"
+        >
+          <Home size={16} /> Home
+        </button>
+
+        <button
           onClick={() => window.location.reload()}
           aria-label="Refresh page"
-          className="w-full flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors"
+          className="w-full flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors border-t border-neutral-100"
         >
           <RefreshCw size={16} /> Refresh
         </button>

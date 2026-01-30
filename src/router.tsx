@@ -1,8 +1,10 @@
 import { lazy, Suspense } from 'react';
 import { createHashRouter, Navigate } from 'react-router-dom';
 import { ErrorBoundary } from '@/framework';
-import { useAnalyticsStore } from '@/stores';
+import { useAnalyticsStore, useAuthStore, useCacheStore } from '@/stores';
 import { NotFound } from '@/components/NotFound';
+import { UserMenu } from '@/framework/components/UserMenu';
+import { AppConfig } from '@/config/app';
 
 const ChatApp = lazy(() => import('./apps/chat/ChatApp'));
 const CMSApp = lazy(() => import('./apps/cms/CMSApp'));
@@ -24,13 +26,22 @@ function AppLoader() {
 
 function AppWrapper({ appName, children }: { appName: string; children: React.ReactNode }) {
   const logError = useAnalyticsStore((state) => state.logError);
+  const { user, logout } = useAuthStore();
+  const { clearCache } = useCacheStore();
+
+  const handleClearCache = () => {
+    clearCache(AppConfig.repository.owner, AppConfig.repository.name);
+  };
 
   return (
-    <ErrorBoundary appName={appName} onError={logError}>
-      <Suspense fallback={<AppLoader />}>
-        {children}
-      </Suspense>
-    </ErrorBoundary>
+    <>
+      <UserMenu user={user} onLogout={logout} onClearCache={handleClearCache} />
+      <ErrorBoundary appName={appName} onError={logError}>
+        <Suspense fallback={<AppLoader />}>
+          {children}
+        </Suspense>
+      </ErrorBoundary>
+    </>
   );
 }
 
