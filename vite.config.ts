@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => ({
     react(),
     mode === 'analyze' && visualizer({ open: true, gzipSize: true })
   ].filter(Boolean),
-  base: './',
+  base: '/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
