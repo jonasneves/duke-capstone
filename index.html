@@ -241,15 +241,12 @@
         const file = await repo.getFile(`${appPath}/index.html`);
         const iframe = document.getElementById('app-frame');
 
-        iframe.style.display = 'block';
-
-        // Write content to iframe
+        // Clear any previous content
         const doc = iframe.contentDocument || iframe.contentWindow.document;
         doc.open();
-        doc.write(file.content);
         doc.close();
 
-        // Inject shared context to avoid re-auth
+        // Set up onload handler BEFORE writing content
         iframe.onload = () => {
           try {
             iframe.contentWindow.INJECTED_TOKEN = token;
@@ -262,6 +259,14 @@
           document.getElementById('app-loader').style.display = 'none';
           showHint();
         };
+
+        // Write content to iframe
+        doc.open();
+        doc.write(file.content);
+        doc.close();
+
+        // Show iframe
+        iframe.style.display = 'block';
 
       } catch (error) {
         alert(`Error loading app: ${error.message}`);
@@ -287,7 +292,18 @@
     }
 
     function closeApp() {
-      document.getElementById('app-frame').style.display = 'none';
+      const iframe = document.getElementById('app-frame');
+      iframe.style.display = 'none';
+
+      // Clear iframe content completely
+      const doc = iframe.contentDocument || iframe.contentWindow.document;
+      doc.open();
+      doc.write('');
+      doc.close();
+
+      // Remove onload handler
+      iframe.onload = null;
+
       document.getElementById('hint').classList.remove('visible');
     }
 
