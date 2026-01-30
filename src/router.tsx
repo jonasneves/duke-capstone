@@ -8,6 +8,7 @@ const CMSApp = lazy(() => import('./apps/cms/CMSApp'));
 const Dashboard = lazy(() => import('./apps/dashboard/Dashboard'));
 const FileBrowser = lazy(() => import('./apps/file-browser/FileBrowser'));
 const TodoApp = lazy(() => import('./apps/todo/TodoApp'));
+const SettingsApp = lazy(() => import('./apps/settings/SettingsApp'));
 
 function AppLoader() {
   return (
@@ -89,6 +90,14 @@ export const router = createHashRouter([
     element: (
       <AppWrapper appName="todo">
         <TodoApp />
+      </AppWrapper>
+    )
+  },
+  {
+    path: '/settings',
+    element: (
+      <AppWrapper appName="settings">
+        <SettingsApp />
       </AppWrapper>
     )
   }

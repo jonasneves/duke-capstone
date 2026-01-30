@@ -1,0 +1,8 @@
+{
+  "name": "Settings",
+  "description": "User preferences and repository information",
+  "version": "1.0.0",
+  "tech": ["React", "TypeScript"],
+  "minLauncherVersion": "1.0.0",
+  "reactRoute": "/settings"
+}

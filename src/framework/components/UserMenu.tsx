@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { RefreshCw, Trash2, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { RefreshCw, Trash2, LogOut, Settings } from 'lucide-react';
 import type { User } from '../types';
 
 interface UserMenuProps {
@@ -11,6 +12,7 @@ interface UserMenuProps {
 export function UserMenu({ user, onLogout, onClearCache }: UserMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -28,6 +30,11 @@ export function UserMenu({ user, onLogout, onClearCache }: UserMenuProps) {
       onClearCache();
       window.location.reload();
     }
+  };
+
+  const handleSettings = () => {
+    setIsOpen(false);
+    navigate('/settings');
   };
 
   if (!user) return null;
@@ -52,6 +59,13 @@ export function UserMenu({ user, onLogout, onClearCache }: UserMenuProps) {
           className="w-full flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors"
         >
           <RefreshCw size={16} /> Refresh
+        </button>
+
+        <button
+          onClick={handleSettings}
+          className="w-full flex items-center gap-3 px-4 py-3 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors border-t border-neutral-100"
+        >
+          <Settings size={16} /> Settings
         </button>
 
         <button
