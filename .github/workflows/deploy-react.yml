@@ -25,6 +25,10 @@ jobs:
 
       - name: Build React app
         run: npm run build
+        # For custom domain: uses base: '/' (default)
+        # For repo-based GH Pages: set VITE_BASE_PATH=/playground/
+        # env:
+        #   VITE_BASE_PATH: /playground/
 
       - name: Prepare deployment directory
         run: |

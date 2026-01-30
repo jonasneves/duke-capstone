@@ -6,12 +6,18 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Determine base path:
+// - Custom domain or root site: use '/'
+// - Repo-based GitHub Pages: use '/repo-name/'
+// Override with VITE_BASE_PATH env variable if needed
+const base = process.env.VITE_BASE_PATH || '/';
+
 export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === 'analyze' && visualizer({ open: true, gzipSize: true })
   ].filter(Boolean),
-  base: '/',
+  base,
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
