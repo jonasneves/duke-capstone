@@ -10,8 +10,8 @@ export const AppConfig = {
     title: 'Playground',
     subtitle: 'Launch and experiment with apps',
     theme: {
-      primary: '#6366f1',
-      secondary: '#8b5cf6'
+      primary: '#1e3a5f',
+      secondary: '#2c4f7c'
     }
   },
 

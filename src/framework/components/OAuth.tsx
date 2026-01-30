@@ -122,7 +122,7 @@ export function OAuth({
           <button
             onClick={() => window.GitHubAuth.login()}
             style={{
-              background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+              background: 'linear-gradient(135deg, #1e3a5f 0%, #2c4f7c 100%)',
               color: 'white',
               border: 'none',
               padding: '12px 24px',
