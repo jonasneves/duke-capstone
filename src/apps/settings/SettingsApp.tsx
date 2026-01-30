@@ -105,19 +105,13 @@ export default function SettingsApp() {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <div className="bg-white border-b border-neutral-200 px-6 py-4 flex items-center justify-between">
+      <div className="bg-white border-b border-neutral-200 px-6 py-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-brand-100 rounded-xl flex items-center justify-center">
             <SettingsIcon className="text-brand-600" size={22} />
           </div>
           <h1 className="text-xl font-semibold text-neutral-900">Settings</h1>
         </div>
-        <button
-          onClick={() => navigate('/')}
-          className="px-4 py-2 text-sm text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors"
-        >
-          ← Back
-        </button>
       </div>
 
       <div className="max-w-2xl mx-auto px-6 py-8 space-y-6">
