@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Settings as SettingsIcon, LogOut, Trash2, Database, GitBranch, Package } from 'lucide-react';
+import { Settings as SettingsIcon, GitBranch, Package } from 'lucide-react';
 import { useAuthStore, useCacheStore, useAnalyticsStore } from '@/stores';
 import { AppConfig } from '@/config/app';
 
