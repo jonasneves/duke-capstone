@@ -84,21 +84,22 @@ export default function ChatApp() {
   }, [clearMessages]);
 
   return (
-    <div className="h-screen flex flex-col bg-neutral-50">
-      <div className="bg-white border-b border-neutral-100 px-6 py-4">
-        <h1 className="text-xl font-semibold text-neutral-900">AI Chat</h1>
-        <p className="text-sm text-neutral-500">Powered by GitHub Models</p>
+    <div className="h-screen flex flex-col bg-[#E2E6ED]">
+      <div className="bg-[#012169] px-6 py-3.5 flex items-center justify-between">
+        <h1 className="text-lg font-bold text-white">AI Chat</h1>
+        <ModelSelector
+          selectedModel={selectedModel}
+          onModelChange={setSelectedModel}
+          onClearChat={handleClearChat}
+        />
       </div>
 
-      <ModelSelector
-        selectedModel={selectedModel}
-        onModelChange={setSelectedModel}
-        onClearChat={handleClearChat}
-      />
-
-      <MessageList messages={messages} />
-
-      <ChatInput onSend={handleSend} disabled={isLoading} />
+      <div className="flex-1 flex justify-center p-6 overflow-hidden">
+        <div className="w-full max-w-[800px] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+          <MessageList messages={messages} />
+          <ChatInput onSend={handleSend} disabled={isLoading} />
+        </div>
+      </div>
     </div>
   );
 }

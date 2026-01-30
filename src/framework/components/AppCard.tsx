@@ -39,8 +39,8 @@ export function AppCard({ appName, manifest, path, onLaunch, version }: AppCardP
   const versionWarning = checkVersionCompatibility(manifest, version);
 
   return (
-    <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden group flex flex-col h-full">
-      <div className={`w-full bg-gradient-to-br from-brand-50 to-neutral-50 flex items-center justify-center ${manifest.thumbnail ? 'h-48' : 'h-32'}`}>
+    <div className="bg-white rounded-xl border border-neutral-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden group flex flex-col h-full">
+      <div className={`w-full bg-gradient-to-br from-brand-50 to-neutral-50 flex items-center justify-center ${manifest.thumbnail ? 'h-32' : 'h-20'}`}>
         {manifest.thumbnail ? (
           <img
             src={manifest.thumbnail}
@@ -49,25 +49,25 @@ export function AppCard({ appName, manifest, path, onLaunch, version }: AppCardP
             onError={(e) => { e.currentTarget.style.display = 'none'; }}
           />
         ) : (
-          <div className="text-6xl">{manifest.name.charAt(0)}</div>
+          <div className="text-4xl text-neutral-400">{manifest.name.charAt(0)}</div>
         )}
       </div>
 
-      <div className="p-6 flex flex-col flex-1">
-        <h3 className="text-xl font-semibold text-neutral-900 mb-2">{manifest.name}</h3>
-        <p className="text-neutral-600 text-sm leading-relaxed mb-4 line-clamp-2">{manifest.description}</p>
+      <div className="p-4 flex flex-col flex-1">
+        <h3 className="text-base font-semibold text-neutral-900 mb-1">{manifest.name}</h3>
+        <p className="text-neutral-600 text-xs leading-relaxed mb-3 line-clamp-2">{manifest.description}</p>
 
         {versionWarning && (
-          <div className="flex items-center gap-2 text-amber-600 text-xs mb-4 bg-amber-50 px-3 py-2 rounded-lg">
-            <AlertCircle size={14} />
-            {versionWarning}
+          <div className="flex items-center gap-1.5 text-amber-600 text-xs mb-3 bg-amber-50 px-2 py-1.5 rounded">
+            <AlertCircle size={12} />
+            <span className="text-[10px]">{versionWarning}</span>
           </div>
         )}
 
         {manifest.tech && manifest.tech.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4">
+          <div className="flex flex-wrap gap-1.5 mb-3">
             {manifest.tech.map(t => (
-              <span key={t} className="bg-neutral-100 text-neutral-700 px-3 py-1 rounded-full text-xs font-medium">
+              <span key={t} className="bg-neutral-100 text-neutral-700 px-2 py-0.5 rounded-full text-[10px] font-medium">
                 {t}
               </span>
             ))}
@@ -76,10 +76,10 @@ export function AppCard({ appName, manifest, path, onLaunch, version }: AppCardP
 
         <button
           onClick={() => onLaunch(path, manifest.name)}
-          className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-600 to-brand-700 hover:from-brand-700 hover:to-brand-800 text-white px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 group-hover:gap-3 mt-auto"
+          className="inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-brand-600 to-brand-700 hover:from-brand-700 hover:to-brand-800 text-white px-3 py-2 rounded-lg font-medium text-xs transition-all duration-200 group-hover:gap-2 mt-auto"
         >
           Launch App
-          <ArrowRight size={16} className="transition-transform duration-200" />
+          <ArrowRight size={14} className="transition-transform duration-200" />
         </button>
       </div>
     </div>

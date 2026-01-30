@@ -33,8 +33,8 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
   };
 
   return (
-    <div className="bg-neutral-50 px-6 py-6">
-      <div className="relative max-w-5xl mx-auto">
+    <div className="px-6 py-5 bg-white border-t border-neutral-100">
+      <div className="flex items-center gap-2 px-5 py-2 bg-neutral-50 border border-neutral-200 rounded-[28px] transition-all focus-within:border-[#00539B] focus-within:shadow-[0_0_0_3px_rgba(0,83,155,0.1)]">
         <input
           ref={inputRef}
           type="text"
@@ -42,15 +42,15 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Type your message..."
+          placeholder="Type a message..."
           disabled={disabled}
-          className="w-full px-6 py-4 pr-16 bg-white border border-neutral-200 rounded-full text-base focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:border-neutral-300 disabled:bg-neutral-100 disabled:text-neutral-400 shadow-sm"
+          className="flex-1 py-2 bg-transparent border-none text-[15px] text-neutral-900 placeholder-neutral-400 focus:outline-none disabled:text-neutral-400"
         />
         <button
           onClick={handleSend}
           disabled={disabled || !input.trim()}
           id="send-btn"
-          className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-neutral-900 hover:bg-neutral-800 text-white rounded-full transition-colors disabled:bg-neutral-300 disabled:cursor-not-allowed shadow-sm"
+          className="w-10 h-10 flex items-center justify-center bg-[#00539B] hover:bg-[#012169] text-white rounded-full transition-colors disabled:bg-neutral-300 disabled:cursor-not-allowed flex-shrink-0"
           aria-label="Send message"
         >
           <ArrowUp size={18} />

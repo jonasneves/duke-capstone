@@ -26,22 +26,22 @@ export default function Dashboard() {
       startTimer('data_load_ms');
 
       // Load directories in parallel
-      const [rootFiles, apps, shared] = await Promise.all([
+      const [rootFiles, apps, srcFiles] = await Promise.all([
         api.listDirectory(''),
         api.listDirectory('apps'),
-        api.listDirectory('shared')
+        api.listDirectory('src')
       ]);
 
       // Count items by type
       const appDirs = apps.filter((a: any) => a.type === 'dir');
-      const sharedDirs = shared.filter((a: any) => a.type === 'dir');
+      const srcDirs = srcFiles.filter((a: any) => a.type === 'dir');
       const rootFileCount = rootFiles.filter((f: any) => f.type === 'file').length;
 
       endTimer('data_load_ms');
 
       setStats({
         appCount: appDirs.length,
-        utilCount: sharedDirs.length,
+        utilCount: srcDirs.length,
         fileCount: rootFileCount,
         lastChecked: new Date()
       });
@@ -53,7 +53,7 @@ export default function Dashboard() {
   };
 
   const activityMessage = !stats ? '' :
-    `Repository contains ${stats.appCount} apps, ${stats.utilCount} shared modules, and ${stats.fileCount} root files. Last checked: ${stats.lastChecked.toLocaleString()}`;
+    `Repository contains ${stats.appCount} apps, ${stats.utilCount} source modules, and ${stats.fileCount} root files. Last checked: ${stats.lastChecked.toLocaleString()}`;
 
   const handleBack = () => {
     navigate('/');
@@ -107,7 +107,7 @@ export default function Dashboard() {
       <div className="max-w-4xl mx-auto px-6 py-8 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatCard title="Applications" value={stats?.appCount || 0} />
-          <StatCard title="Shared Utilities" value={stats?.utilCount || 0} />
+          <StatCard title="Source Modules" value={stats?.utilCount || 0} />
           <StatCard title="Root Files" value={stats?.fileCount || 0} />
         </div>
 

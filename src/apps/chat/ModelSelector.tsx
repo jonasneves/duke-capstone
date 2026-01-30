@@ -15,25 +15,24 @@ const MODELS: { value: Model; label: string }[] = [
 
 export function ModelSelector({ selectedModel, onModelChange, onClearChat }: ModelSelectorProps) {
   return (
-    <div className="flex items-center gap-3 px-6 py-3 bg-white border-b border-neutral-100">
-      <label htmlFor="model" className="text-sm font-medium text-neutral-600">Model:</label>
+    <div className="flex items-center gap-2">
       <select
         id="model"
         value={selectedModel}
         onChange={(e) => onModelChange(e.target.value as Model)}
-        className="px-3 py-1.5 text-sm border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:border-neutral-300 bg-white"
+        className="px-3 py-1.5 text-xs bg-white/10 text-white border border-white/20 rounded-full focus:outline-none focus:bg-white/20 transition-colors"
       >
         {MODELS.map(model => (
-          <option key={model.value} value={model.value}>
+          <option key={model.value} value={model.value} className="text-neutral-900">
             {model.label}
           </option>
         ))}
       </select>
       <button
         onClick={onClearChat}
-        className="ml-auto px-3 py-1.5 text-sm text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50 rounded-lg transition-colors"
+        className="px-3 py-1.5 text-xs text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors"
       >
-        Clear Chat
+        Clear
       </button>
     </div>
   );
