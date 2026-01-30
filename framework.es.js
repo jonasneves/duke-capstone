@@ -1,447 +1,483 @@
-import Y, { useCallback as N, useState as O, useEffect as F, forwardRef as fe, createElement as K, useRef as he } from "react";
-const ae = (t) => {
-  let r;
-  const i = /* @__PURE__ */ new Set(), s = (g, y) => {
-    const x = typeof g == "function" ? g(r) : g;
-    if (!Object.is(x, r)) {
-      const j = r;
-      r = y ?? (typeof x != "object" || x === null) ? x : Object.assign({}, r, x), i.forEach((b) => b(r, j));
+import J, { useCallback as T, useState as I, useEffect as F, forwardRef as fe, createElement as K, useRef as he, Component as ye } from "react";
+const oe = (r) => {
+  let t;
+  const o = /* @__PURE__ */ new Set(), i = (d, y) => {
+    const b = typeof d == "function" ? d(t) : d;
+    if (!Object.is(b, t)) {
+      const j = t;
+      t = y ?? (typeof b != "object" || b === null) ? b : Object.assign({}, t, b), o.forEach((k) => k(t, j));
     }
-  }, n = () => r, l = { setState: s, getState: n, getInitialState: () => u, subscribe: (g) => (i.add(g), () => i.delete(g)) }, u = r = t(s, n, l);
-  return l;
-}, ge = ((t) => t ? ae(t) : ae), ye = (t) => t;
-function ve(t, r = ye) {
-  const i = Y.useSyncExternalStore(
-    t.subscribe,
-    Y.useCallback(() => r(t.getState()), [t, r]),
-    Y.useCallback(() => r(t.getInitialState()), [t, r])
+  }, n = () => t, c = { setState: i, getState: n, getInitialState: () => u, subscribe: (d) => (o.add(d), () => o.delete(d)) }, u = t = r(i, n, c);
+  return c;
+}, xe = ((r) => r ? oe(r) : oe), ve = (r) => r;
+function be(r, t = ve) {
+  const o = J.useSyncExternalStore(
+    r.subscribe,
+    J.useCallback(() => t(r.getState()), [r, t]),
+    J.useCallback(() => t(r.getInitialState()), [r, t])
   );
-  return Y.useDebugValue(i), i;
+  return J.useDebugValue(o), o;
 }
-const oe = (t) => {
-  const r = ge(t), i = (s) => ve(r, s);
-  return Object.assign(i, r), i;
-}, Q = ((t) => t ? oe(t) : oe);
-function be(t, r) {
-  let i;
+const ae = (r) => {
+  const t = xe(r), o = (i) => be(t, i);
+  return Object.assign(o, t), o;
+}, Q = ((r) => r ? ae(r) : ae);
+function je(r, t) {
+  let o;
   try {
-    i = t();
+    o = r();
   } catch {
     return;
   }
   return {
     getItem: (n) => {
-      var a;
-      const c = (u) => u === null ? null : JSON.parse(u, void 0), l = (a = i.getItem(n)) != null ? a : null;
-      return l instanceof Promise ? l.then(c) : c(l);
+      var s;
+      const l = (u) => u === null ? null : JSON.parse(u, void 0), c = (s = o.getItem(n)) != null ? s : null;
+      return c instanceof Promise ? c.then(l) : l(c);
     },
-    setItem: (n, a) => i.setItem(n, JSON.stringify(a, void 0)),
-    removeItem: (n) => i.removeItem(n)
+    setItem: (n, s) => o.setItem(n, JSON.stringify(s, void 0)),
+    removeItem: (n) => o.removeItem(n)
   };
 }
-const Z = (t) => (r) => {
+const Z = (r) => (t) => {
   try {
-    const i = t(r);
-    return i instanceof Promise ? i : {
-      then(s) {
-        return Z(s)(i);
+    const o = r(t);
+    return o instanceof Promise ? o : {
+      then(i) {
+        return Z(i)(o);
       },
-      catch(s) {
+      catch(i) {
         return this;
       }
     };
-  } catch (i) {
+  } catch (o) {
     return {
-      then(s) {
+      then(i) {
         return this;
       },
-      catch(s) {
-        return Z(s)(i);
+      catch(i) {
+        return Z(i)(o);
       }
     };
   }
-}, xe = (t, r) => (i, s, n) => {
-  let a = {
-    storage: be(() => localStorage),
-    partialize: (m) => m,
+}, we = (r, t) => (o, i, n) => {
+  let s = {
+    storage: je(() => localStorage),
+    partialize: (g) => g,
     version: 0,
-    merge: (m, T) => ({
-      ...T,
-      ...m
+    merge: (g, R) => ({
+      ...R,
+      ...g
     }),
-    ...r
-  }, c = !1, l = 0;
-  const u = /* @__PURE__ */ new Set(), g = /* @__PURE__ */ new Set();
-  let y = a.storage;
+    ...t
+  }, l = !1, c = 0;
+  const u = /* @__PURE__ */ new Set(), d = /* @__PURE__ */ new Set();
+  let y = s.storage;
   if (!y)
-    return t(
-      (...m) => {
+    return r(
+      (...g) => {
         console.warn(
-          `[zustand persist middleware] Unable to update item '${a.name}', the given storage is currently unavailable.`
-        ), i(...m);
+          `[zustand persist middleware] Unable to update item '${s.name}', the given storage is currently unavailable.`
+        ), o(...g);
       },
-      s,
+      i,
       n
     );
-  const x = () => {
-    const m = a.partialize({ ...s() });
-    return y.setItem(a.name, {
-      state: m,
-      version: a.version
+  const b = () => {
+    const g = s.partialize({ ...i() });
+    return y.setItem(s.name, {
+      state: g,
+      version: s.version
     });
   }, j = n.setState;
-  n.setState = (m, T) => (j(m, T), x());
-  const b = t(
-    (...m) => (i(...m), x()),
-    s,
+  n.setState = (g, R) => (j(g, R), b());
+  const k = r(
+    (...g) => (o(...g), b()),
+    i,
     n
   );
-  n.getInitialState = () => b;
-  let k;
-  const $ = () => {
-    var m, T;
+  n.getInitialState = () => k;
+  let _;
+  const N = () => {
+    var g, R;
     if (!y) return;
-    const C = ++l;
-    c = !1, u.forEach((d) => {
+    const O = ++c;
+    l = !1, u.forEach((m) => {
       var p;
-      return d((p = s()) != null ? p : b);
+      return m((p = i()) != null ? p : k);
     });
-    const f = ((T = a.onRehydrateStorage) == null ? void 0 : T.call(a, (m = s()) != null ? m : b)) || void 0;
-    return Z(y.getItem.bind(y))(a.name).then((d) => {
-      if (d)
-        if (typeof d.version == "number" && d.version !== a.version) {
-          if (a.migrate) {
-            const p = a.migrate(
-              d.state,
-              d.version
+    const h = ((R = s.onRehydrateStorage) == null ? void 0 : R.call(s, (g = i()) != null ? g : k)) || void 0;
+    return Z(y.getItem.bind(y))(s.name).then((m) => {
+      if (m)
+        if (typeof m.version == "number" && m.version !== s.version) {
+          if (s.migrate) {
+            const p = s.migrate(
+              m.state,
+              m.version
             );
-            return p instanceof Promise ? p.then((S) => [!0, S]) : [!0, p];
+            return p instanceof Promise ? p.then((A) => [!0, A]) : [!0, p];
           }
           console.error(
             "State loaded from storage couldn't be migrated since no migrate function was provided"
           );
         } else
-          return [!1, d.state];
+          return [!1, m.state];
       return [!1, void 0];
-    }).then((d) => {
+    }).then((m) => {
       var p;
-      if (C !== l)
+      if (O !== c)
         return;
-      const [S, I] = d;
-      if (k = a.merge(
-        I,
-        (p = s()) != null ? p : b
-      ), i(k, !0), S)
-        return x();
+      const [A, L] = m;
+      if (_ = s.merge(
+        L,
+        (p = i()) != null ? p : k
+      ), o(_, !0), A)
+        return b();
     }).then(() => {
-      C === l && (f?.(k, void 0), k = s(), c = !0, g.forEach((d) => d(k)));
-    }).catch((d) => {
-      C === l && f?.(void 0, d);
+      O === c && (h?.(_, void 0), _ = i(), l = !0, d.forEach((m) => m(_)));
+    }).catch((m) => {
+      O === c && h?.(void 0, m);
     });
   };
   return n.persist = {
-    setOptions: (m) => {
-      a = {
-        ...a,
-        ...m
-      }, m.storage && (y = m.storage);
+    setOptions: (g) => {
+      s = {
+        ...s,
+        ...g
+      }, g.storage && (y = g.storage);
     },
     clearStorage: () => {
-      y?.removeItem(a.name);
+      y?.removeItem(s.name);
     },
-    getOptions: () => a,
-    rehydrate: () => $(),
-    hasHydrated: () => c,
-    onHydrate: (m) => (u.add(m), () => {
-      u.delete(m);
+    getOptions: () => s,
+    rehydrate: () => N(),
+    hasHydrated: () => l,
+    onHydrate: (g) => (u.add(g), () => {
+      u.delete(g);
     }),
-    onFinishHydration: (m) => (g.add(m), () => {
-      g.delete(m);
+    onFinishHydration: (g) => (d.add(g), () => {
+      d.delete(g);
     })
-  }, a.skipHydration || $(), k || b;
-}, je = xe;
-function Ye(t = "auth-storage") {
+  }, s.skipHydration || N(), _ || k;
+}, me = we;
+function Ye(r = "auth-storage") {
   return Q()(
-    je(
-      (r) => ({
+    me(
+      (t) => ({
         token: null,
         user: null,
         isAuthenticated: !1,
-        setAuth: (i, s) => r({ token: i, user: s, isAuthenticated: !0 }),
+        setAuth: (o, i) => t({ token: o, user: i, isAuthenticated: !0 }),
         logout: () => {
-          r({ token: null, user: null, isAuthenticated: !1 }), localStorage.clear(), window.location.href = "/";
+          t({ token: null, user: null, isAuthenticated: !1 }), localStorage.clear(), window.location.href = "/";
         }
       }),
       {
-        name: t
+        name: r
       }
     )
   );
 }
-function We(t = 3e5) {
-  return Q()((r, i) => ({
-    cacheTimeout: t,
-    getCache: (s, n, a) => {
-      const c = `gh_${s}_${n}_${a}`, l = localStorage.getItem(c);
-      if (!l) return null;
+function Ge(r = 3e5) {
+  return Q()((t, o) => ({
+    cacheTimeout: r,
+    getCache: (i, n, s) => {
+      const l = `gh_${i}_${n}_${s}`, c = localStorage.getItem(l);
+      if (!c) return null;
       try {
-        const u = JSON.parse(l);
-        return Date.now() - u.timestamp > i().cacheTimeout ? (localStorage.removeItem(c), null) : u;
+        const u = JSON.parse(c);
+        return Date.now() - u.timestamp > o().cacheTimeout ? (localStorage.removeItem(l), null) : u;
       } catch {
         return null;
       }
     },
-    setCache: (s, n, a, c, l) => {
-      const u = `gh_${s}_${n}_${a}`;
+    setCache: (i, n, s, l, c) => {
+      const u = `gh_${i}_${n}_${s}`;
       try {
         localStorage.setItem(u, JSON.stringify({
-          content: c,
-          sha: l,
+          content: l,
+          sha: c,
           timestamp: Date.now()
         }));
-      } catch (g) {
-        console.warn("Cache storage failed:", g);
+      } catch (d) {
+        console.warn("Cache storage failed:", d);
       }
     },
-    clearCache: (s, n) => {
-      const a = `gh_${s}_${n}_`;
-      Object.keys(localStorage).filter((l) => l.startsWith(a)).forEach((l) => localStorage.removeItem(l));
+    clearCache: (i, n) => {
+      const s = `gh_${i}_${n}_`;
+      Object.keys(localStorage).filter((c) => c.startsWith(s)).forEach((c) => localStorage.removeItem(c));
     },
-    invalidateCache: (s, n, a) => {
-      const c = `gh_${s}_${n}_${a}`;
-      localStorage.removeItem(c);
+    invalidateCache: (i, n, s) => {
+      const l = `gh_${i}_${n}_${s}`;
+      localStorage.removeItem(l);
     }
   }));
 }
-function Ge(t = { enabled: !0, maxEvents: 100 }) {
-  return Q()((r, i) => ({
-    events: [],
-    errors: [],
-    metrics: [],
-    track: (s, n = {}) => {
-      if (!t.enabled) return;
-      const a = {
-        type: s,
-        data: n,
-        timestamp: Date.now()
-      };
-      r((c) => ({
-        events: [...c.events.slice(-(t.maxEvents - 1)), a]
-      })), console.log("[Analytics]", s, n);
-    },
-    logError: (s) => {
-      t.enabled && (r((n) => ({
-        errors: [...n.errors.slice(-49), s]
-      })), console.error("[Error]", s));
-    },
-    trackMetric: (s, n, a) => {
-      if (!t.enabled) return;
-      const c = { app: s, metric: n, value: a, timestamp: Date.now() };
-      r((l) => ({
-        metrics: [...l.metrics.slice(-199), c]
-      }));
-    },
-    getMetrics: (s) => i().metrics.filter((n) => n.app === s)
-  }));
+function qe(r = "analytics-storage", t = { enabled: !0, maxEvents: 100 }) {
+  return Q()(
+    me(
+      (o, i) => ({
+        events: [],
+        errors: [],
+        metrics: [],
+        track: (n, s = {}) => {
+          if (!t.enabled) return;
+          const l = {
+            type: n,
+            data: s,
+            timestamp: Date.now()
+          };
+          o((c) => ({
+            events: [...c.events.slice(-(t.maxEvents - 1)), l]
+          })), console.log("[Analytics]", n, s);
+        },
+        logError: (n) => {
+          t.enabled && (console.error("[Analytics] Error logged:", n), o((s) => ({
+            errors: [...s.errors.slice(-99), n]
+          })));
+        },
+        trackMetric: (n, s, l, c) => {
+          if (!t.enabled) return;
+          const u = c ? l > c : !1, d = {
+            appName: n,
+            metricName: s,
+            duration: l,
+            timestamp: Date.now(),
+            threshold: c,
+            exceedsThreshold: u
+          };
+          u && console.warn(
+            `[${n}] ${s} exceeded threshold: ${l.toFixed(2)}ms > ${c}ms`
+          ), o((y) => ({
+            metrics: [...y.metrics.slice(-999), d]
+          }));
+        },
+        clearMetrics: () => o({ metrics: [] }),
+        clearErrors: () => o({ errors: [] }),
+        getMetricStats: (n, s) => {
+          const l = i().metrics.filter(
+            (d) => d.appName === n && d.metricName === s
+          );
+          if (l.length === 0) return null;
+          const c = l.map((d) => d.duration), u = l.filter((d) => d.exceedsThreshold).length;
+          return {
+            count: l.length,
+            average: c.reduce((d, y) => d + y, 0) / c.length,
+            min: Math.min(...c),
+            max: Math.max(...c),
+            exceedCount: u
+          };
+        }
+      }),
+      {
+        name: r,
+        partialize: (o) => ({
+          events: o.events.slice(-50),
+          metrics: o.metrics.slice(-100),
+          errors: o.errors.slice(-20)
+        })
+      }
+    )
+  );
 }
-function qe(t, r) {
-  return function(s, n) {
-    const a = t.token, { getCache: c, setCache: l, invalidateCache: u } = r, g = `https://api.github.com/repos/${s}/${n}`, y = N((f) => btoa(unescape(encodeURIComponent(f))), []), x = N((f) => decodeURIComponent(escape(atob(f))), []), j = N(async (f, d = {}) => {
-      const p = await fetch(`${g}/contents/${f}`, {
-        ...d,
+function Ve(r, t) {
+  return function(i, n) {
+    const s = r.token, { getCache: l, setCache: c, invalidateCache: u } = t, d = `https://api.github.com/repos/${i}/${n}`, y = T((h) => btoa(unescape(encodeURIComponent(h))), []), b = T((h) => decodeURIComponent(escape(atob(h))), []), j = T(async (h, m = {}) => {
+      const p = await fetch(`${d}/contents/${h}`, {
+        ...m,
         headers: {
-          Authorization: `Bearer ${a}`,
+          Authorization: `Bearer ${s}`,
           Accept: "application/vnd.github.v3+json",
-          ...d.headers
+          ...m.headers
         }
       });
       if (!p.ok)
-        throw p.status === 401 ? (t.logout(), new Error("Authentication expired")) : new Error(`Failed to ${d.method || "fetch"} ${f}: ${p.statusText}`);
+        throw p.status === 401 ? (r.logout(), new Error("Authentication expired")) : new Error(`Failed to ${m.method || "fetch"} ${h}: ${p.statusText}`);
       return p.json();
-    }, [g, a]), b = N(async (f) => {
-      const d = c(s, n, f);
-      if (d)
+    }, [d, s]), k = T(async (h) => {
+      const m = l(i, n, h);
+      if (m)
         return {
-          content: d.content,
-          sha: d.sha,
-          path: f
+          content: m.content,
+          sha: m.sha,
+          path: h
         };
-      const p = await j(f), S = {
-        content: x(p.content),
+      const p = await j(h), A = {
+        content: b(p.content),
         sha: p.sha,
         path: p.path,
         name: p.name,
         size: p.size
       };
-      return l(s, n, f, S.content, S.sha), S;
-    }, [s, n, c, l, j, x]), k = N(async (f, d, p, S) => {
-      const I = await j(f, {
+      return c(i, n, h, A.content, A.sha), A;
+    }, [i, n, l, c, j, b]), _ = T(async (h, m, p, A) => {
+      const L = await j(h, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: S || `Update ${f}`,
-          content: y(d),
+          message: A || `Update ${h}`,
+          content: y(m),
           sha: p
         })
       });
-      return u(s, n, f), I;
-    }, [s, n, j, y, u]), $ = N(async (f, d, p) => j(f, {
+      return u(i, n, h), L;
+    }, [i, n, j, y, u]), N = T(async (h, m, p) => j(h, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        message: p || `Create ${f}`,
-        content: y(d)
+        message: p || `Create ${h}`,
+        content: y(m)
       })
-    }), [j, y]), m = N(async (f, d, p) => {
-      const S = await j(f, {
+    }), [j, y]), g = T(async (h, m, p) => {
+      const A = await j(h, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: p || `Delete ${f}`,
-          sha: d
+          message: p || `Delete ${h}`,
+          sha: m
         })
       });
-      return u(s, n, f), S;
-    }, [s, n, j, u]), T = N(async (f = "") => j(f), [j]), C = N(async (f) => {
+      return u(i, n, h), A;
+    }, [i, n, j, u]), R = T(async (h = "") => j(h), [j]), O = T(async (h) => {
       try {
-        const d = await b(`${f}/manifest.json`);
-        return JSON.parse(d.content);
+        const m = await k(`${h}/manifest.json`);
+        return JSON.parse(m.content);
       } catch {
         return null;
       }
-    }, [b]);
+    }, [k]);
     return {
-      getFile: b,
-      updateFile: k,
-      createFile: $,
-      deleteFile: m,
-      listDirectory: T,
-      getManifest: C,
+      getFile: k,
+      updateFile: _,
+      createFile: N,
+      deleteFile: g,
+      listDirectory: R,
+      getManifest: O,
       encodeContent: y,
-      decodeContent: x
+      decodeContent: b
     };
   };
 }
-var G = { exports: {} }, U = {};
+var q = { exports: {} }, U = {};
 var ie;
-function we() {
+function Ee() {
   if (ie) return U;
   ie = 1;
-  var t = /* @__PURE__ */ Symbol.for("react.transitional.element"), r = /* @__PURE__ */ Symbol.for("react.fragment");
-  function i(s, n, a) {
-    var c = null;
-    if (a !== void 0 && (c = "" + a), n.key !== void 0 && (c = "" + n.key), "key" in n) {
-      a = {};
-      for (var l in n)
-        l !== "key" && (a[l] = n[l]);
-    } else a = n;
-    return n = a.ref, {
-      $$typeof: t,
-      type: s,
-      key: c,
+  var r = /* @__PURE__ */ Symbol.for("react.transitional.element"), t = /* @__PURE__ */ Symbol.for("react.fragment");
+  function o(i, n, s) {
+    var l = null;
+    if (s !== void 0 && (l = "" + s), n.key !== void 0 && (l = "" + n.key), "key" in n) {
+      s = {};
+      for (var c in n)
+        c !== "key" && (s[c] = n[c]);
+    } else s = n;
+    return n = s.ref, {
+      $$typeof: r,
+      type: i,
+      key: l,
       ref: n !== void 0 ? n : null,
-      props: a
+      props: s
     };
   }
-  return U.Fragment = r, U.jsx = i, U.jsxs = i, U;
+  return U.Fragment = t, U.jsx = o, U.jsxs = o, U;
 }
-var J = {};
+var W = {};
 var ce;
-function _e() {
+function ke() {
   return ce || (ce = 1, process.env.NODE_ENV !== "production" && (function() {
-    function t(e) {
+    function r(e) {
       if (e == null) return null;
       if (typeof e == "function")
-        return e.$$typeof === A ? null : e.displayName || e.name || null;
+        return e.$$typeof === P ? null : e.displayName || e.name || null;
       if (typeof e == "string") return e;
       switch (e) {
-        case m:
+        case g:
           return "Fragment";
-        case C:
+        case O:
           return "Profiler";
-        case T:
+        case R:
           return "StrictMode";
-        case S:
+        case A:
           return "Suspense";
-        case I:
-          return "SuspenseList";
         case L:
+          return "SuspenseList";
+        case C:
           return "Activity";
       }
       if (typeof e == "object")
         switch (typeof e.tag == "number" && console.error(
           "Received an unexpected object in getComponentNameFromType(). This is likely a bug in React. Please file an issue."
         ), e.$$typeof) {
-          case $:
+          case N:
             return "Portal";
-          case d:
+          case m:
             return e.displayName || "Context";
-          case f:
+          case h:
             return (e._context.displayName || "Context") + ".Consumer";
           case p:
-            var h = e.render;
-            return e = e.displayName, e || (e = h.displayName || h.name || "", e = e !== "" ? "ForwardRef(" + e + ")" : "ForwardRef"), e;
-          case w:
-            return h = e.displayName || null, h !== null ? h : t(e.type) || "Memo";
-          case R:
-            h = e._payload, e = e._init;
+            var f = e.render;
+            return e = e.displayName, e || (e = f.displayName || f.name || "", e = e !== "" ? "ForwardRef(" + e + ")" : "ForwardRef"), e;
+          case Y:
+            return f = e.displayName || null, f !== null ? f : r(e.type) || "Memo";
+          case x:
+            f = e._payload, e = e._init;
             try {
-              return t(e(h));
+              return r(e(f));
             } catch {
             }
         }
       return null;
     }
-    function r(e) {
+    function t(e) {
       return "" + e;
     }
-    function i(e) {
+    function o(e) {
       try {
-        r(e);
-        var h = !1;
+        t(e);
+        var f = !1;
       } catch {
-        h = !0;
+        f = !0;
       }
-      if (h) {
-        h = console;
-        var v = h.error, _ = typeof Symbol == "function" && Symbol.toStringTag && e[Symbol.toStringTag] || e.constructor.name || "Object";
+      if (f) {
+        f = console;
+        var v = f.error, w = typeof Symbol == "function" && Symbol.toStringTag && e[Symbol.toStringTag] || e.constructor.name || "Object";
         return v.call(
-          h,
+          f,
           "The provided key is an unsupported type %s. This value must be coerced to a string before using it here.",
-          _
-        ), r(e);
+          w
+        ), t(e);
       }
     }
-    function s(e) {
-      if (e === m) return "<>";
-      if (typeof e == "object" && e !== null && e.$$typeof === R)
+    function i(e) {
+      if (e === g) return "<>";
+      if (typeof e == "object" && e !== null && e.$$typeof === x)
         return "<...>";
       try {
-        var h = t(e);
-        return h ? "<" + h + ">" : "<...>";
+        var f = r(e);
+        return f ? "<" + f + ">" : "<...>";
       } catch {
         return "<...>";
       }
     }
     function n() {
-      var e = P.A;
+      var e = S.A;
       return e === null ? null : e.getOwner();
     }
-    function a() {
+    function s() {
       return Error("react-stack-top-frame");
     }
-    function c(e) {
+    function l(e) {
       if (M.call(e, "key")) {
-        var h = Object.getOwnPropertyDescriptor(e, "key").get;
-        if (h && h.isReactWarning) return !1;
+        var f = Object.getOwnPropertyDescriptor(e, "key").get;
+        if (f && f.isReactWarning) return !1;
       }
       return e.key !== void 0;
     }
-    function l(e, h) {
+    function c(e, f) {
       function v() {
         ee || (ee = !0, console.error(
           "%s: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://react.dev/link/special-props)",
-          h
+          f
         ));
       }
       v.isReactWarning = !0, Object.defineProperty(e, "key", {
@@ -450,19 +486,19 @@ function _e() {
       });
     }
     function u() {
-      var e = t(this.type);
+      var e = r(this.type);
       return te[e] || (te[e] = !0, console.error(
         "Accessing element.ref was removed in React 19. ref is now a regular prop. It will be removed from the JSX Element type in a future release."
       )), e = this.props.ref, e !== void 0 ? e : null;
     }
-    function g(e, h, v, _, W, V) {
+    function d(e, f, v, w, G, V) {
       var E = v.ref;
       return e = {
-        $$typeof: k,
+        $$typeof: _,
         type: e,
-        key: h,
+        key: f,
         props: v,
-        _owner: _
+        _owner: w
       }, (E !== void 0 ? E : null) !== null ? Object.defineProperty(e, "ref", {
         enumerable: !1,
         get: u
@@ -480,7 +516,7 @@ function _e() {
         configurable: !1,
         enumerable: !1,
         writable: !0,
-        value: W
+        value: G
       }), Object.defineProperty(e, "_debugTask", {
         configurable: !1,
         enumerable: !1,
@@ -488,131 +524,131 @@ function _e() {
         value: V
       }), Object.freeze && (Object.freeze(e.props), Object.freeze(e)), e;
     }
-    function y(e, h, v, _, W, V) {
-      var E = h.children;
+    function y(e, f, v, w, G, V) {
+      var E = f.children;
       if (E !== void 0)
-        if (_)
-          if (H(E)) {
-            for (_ = 0; _ < E.length; _++)
-              x(E[_]);
+        if (w)
+          if (z(E)) {
+            for (w = 0; w < E.length; w++)
+              b(E[w]);
             Object.freeze && Object.freeze(E);
           } else
             console.error(
               "React.jsx: Static children should always be an array. You are likely explicitly calling React.jsxs or React.jsxDEV. Use the Babel transform instead."
             );
-        else x(E);
-      if (M.call(h, "key")) {
-        E = t(e);
-        var D = Object.keys(h).filter(function(pe) {
-          return pe !== "key";
+        else b(E);
+      if (M.call(f, "key")) {
+        E = r(e);
+        var D = Object.keys(f).filter(function(ge) {
+          return ge !== "key";
         });
-        _ = 0 < D.length ? "{key: someKey, " + D.join(": ..., ") + ": ...}" : "{key: someKey}", se[E + _] || (D = 0 < D.length ? "{" + D.join(": ..., ") + ": ...}" : "{}", console.error(
+        w = 0 < D.length ? "{key: someKey, " + D.join(": ..., ") + ": ...}" : "{key: someKey}", se[E + w] || (D = 0 < D.length ? "{" + D.join(": ..., ") + ": ...}" : "{}", console.error(
           `A props object containing a "key" prop is being spread into JSX:
   let props = %s;
   <%s {...props} />
 React keys must be passed directly to JSX without using spread:
   let props = %s;
   <%s key={someKey} {...props} />`,
-          _,
+          w,
           E,
           D,
           E
-        ), se[E + _] = !0);
+        ), se[E + w] = !0);
       }
-      if (E = null, v !== void 0 && (i(v), E = "" + v), c(h) && (i(h.key), E = "" + h.key), "key" in h) {
+      if (E = null, v !== void 0 && (o(v), E = "" + v), l(f) && (o(f.key), E = "" + f.key), "key" in f) {
         v = {};
-        for (var B in h)
-          B !== "key" && (v[B] = h[B]);
-      } else v = h;
-      return E && l(
+        for (var B in f)
+          B !== "key" && (v[B] = f[B]);
+      } else v = f;
+      return E && c(
         v,
         typeof e == "function" ? e.displayName || e.name || "Unknown" : e
-      ), g(
+      ), d(
         e,
         E,
         v,
         n(),
-        W,
+        G,
         V
       );
     }
-    function x(e) {
-      j(e) ? e._store && (e._store.validated = 1) : typeof e == "object" && e !== null && e.$$typeof === R && (e._payload.status === "fulfilled" ? j(e._payload.value) && e._payload.value._store && (e._payload.value._store.validated = 1) : e._store && (e._store.validated = 1));
+    function b(e) {
+      j(e) ? e._store && (e._store.validated = 1) : typeof e == "object" && e !== null && e.$$typeof === x && (e._payload.status === "fulfilled" ? j(e._payload.value) && e._payload.value._store && (e._payload.value._store.validated = 1) : e._store && (e._store.validated = 1));
     }
     function j(e) {
-      return typeof e == "object" && e !== null && e.$$typeof === k;
+      return typeof e == "object" && e !== null && e.$$typeof === _;
     }
-    var b = Y, k = /* @__PURE__ */ Symbol.for("react.transitional.element"), $ = /* @__PURE__ */ Symbol.for("react.portal"), m = /* @__PURE__ */ Symbol.for("react.fragment"), T = /* @__PURE__ */ Symbol.for("react.strict_mode"), C = /* @__PURE__ */ Symbol.for("react.profiler"), f = /* @__PURE__ */ Symbol.for("react.consumer"), d = /* @__PURE__ */ Symbol.for("react.context"), p = /* @__PURE__ */ Symbol.for("react.forward_ref"), S = /* @__PURE__ */ Symbol.for("react.suspense"), I = /* @__PURE__ */ Symbol.for("react.suspense_list"), w = /* @__PURE__ */ Symbol.for("react.memo"), R = /* @__PURE__ */ Symbol.for("react.lazy"), L = /* @__PURE__ */ Symbol.for("react.activity"), A = /* @__PURE__ */ Symbol.for("react.client.reference"), P = b.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, M = Object.prototype.hasOwnProperty, H = Array.isArray, q = console.createTask ? console.createTask : function() {
+    var k = J, _ = /* @__PURE__ */ Symbol.for("react.transitional.element"), N = /* @__PURE__ */ Symbol.for("react.portal"), g = /* @__PURE__ */ Symbol.for("react.fragment"), R = /* @__PURE__ */ Symbol.for("react.strict_mode"), O = /* @__PURE__ */ Symbol.for("react.profiler"), h = /* @__PURE__ */ Symbol.for("react.consumer"), m = /* @__PURE__ */ Symbol.for("react.context"), p = /* @__PURE__ */ Symbol.for("react.forward_ref"), A = /* @__PURE__ */ Symbol.for("react.suspense"), L = /* @__PURE__ */ Symbol.for("react.suspense_list"), Y = /* @__PURE__ */ Symbol.for("react.memo"), x = /* @__PURE__ */ Symbol.for("react.lazy"), C = /* @__PURE__ */ Symbol.for("react.activity"), P = /* @__PURE__ */ Symbol.for("react.client.reference"), S = k.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, M = Object.prototype.hasOwnProperty, z = Array.isArray, $ = console.createTask ? console.createTask : function() {
       return null;
     };
-    b = {
+    k = {
       react_stack_bottom_frame: function(e) {
         return e();
       }
     };
-    var ee, te = {}, re = b.react_stack_bottom_frame.bind(
-      b,
-      a
-    )(), ne = q(s(a)), se = {};
-    J.Fragment = m, J.jsx = function(e, h, v) {
-      var _ = 1e4 > P.recentlyCreatedOwnerStacks++;
+    var ee, te = {}, re = k.react_stack_bottom_frame.bind(
+      k,
+      s
+    )(), ne = $(i(s)), se = {};
+    W.Fragment = g, W.jsx = function(e, f, v) {
+      var w = 1e4 > S.recentlyCreatedOwnerStacks++;
       return y(
         e,
-        h,
+        f,
         v,
         !1,
-        _ ? Error("react-stack-top-frame") : re,
-        _ ? q(s(e)) : ne
+        w ? Error("react-stack-top-frame") : re,
+        w ? $(i(e)) : ne
       );
-    }, J.jsxs = function(e, h, v) {
-      var _ = 1e4 > P.recentlyCreatedOwnerStacks++;
+    }, W.jsxs = function(e, f, v) {
+      var w = 1e4 > S.recentlyCreatedOwnerStacks++;
       return y(
         e,
-        h,
+        f,
         v,
         !0,
-        _ ? Error("react-stack-top-frame") : re,
-        _ ? q(s(e)) : ne
+        w ? Error("react-stack-top-frame") : re,
+        w ? $(i(e)) : ne
       );
     };
-  })()), J;
+  })()), W;
 }
 var le;
-function Ee() {
-  return le || (le = 1, process.env.NODE_ENV === "production" ? G.exports = we() : G.exports = _e()), G.exports;
+function _e() {
+  return le || (le = 1, process.env.NODE_ENV === "production" ? q.exports = Ee() : q.exports = ke()), q.exports;
 }
-var o = Ee();
-function Ve({
-  children: t,
-  oauthServiceUrl: r,
-  onAuthChange: i,
-  isAuthenticated: s
+var a = _e();
+function Be({
+  children: r,
+  oauthServiceUrl: t,
+  onAuthChange: o,
+  isAuthenticated: i
 }) {
-  const [n, a] = O(!0), [c, l] = O(!1);
+  const [n, s] = I(!0), [l, c] = I(!1);
   return F(() => {
     const u = document.createElement("script");
-    return u.src = `${r}/github-auth.js?v=2`, u.integrity = "sha384-yCvoyjf6LKk2Yc6oSRenxRV0yFNdjeQ5ANuXIcRN50VoX/X8S4YJ9mU2+cT9MGW1", u.crossOrigin = "anonymous", u.async = !0, u.onload = () => {
-      l(!0);
+    return u.src = `${t}/github-auth.js?v=2`, u.integrity = "sha384-yCvoyjf6LKk2Yc6oSRenxRV0yFNdjeQ5ANuXIcRN50VoX/X8S4YJ9mU2+cT9MGW1", u.crossOrigin = "anonymous", u.async = !0, u.onload = () => {
+      c(!0);
     }, u.onerror = () => {
-      console.error("Failed to load OAuth script"), a(!1);
+      console.error("Failed to load OAuth script"), s(!1);
     }, document.head.appendChild(u), () => {
       document.head.removeChild(u);
     };
-  }, [r]), F(() => {
-    if (c)
+  }, [t]), F(() => {
+    if (l)
       if (window.GitHubAuth.isAuthenticated()) {
-        const u = window.GitHubAuth.getUser(), g = window.GitHubAuth.getToken();
-        u && g && (i(g, u), a(!1));
+        const u = window.GitHubAuth.getUser(), d = window.GitHubAuth.getToken();
+        u && d && (o(d, u), s(!1));
       } else
         window.GitHubAuth.init({
           scope: "repo",
           onLogin: (u) => {
-            const g = window.GitHubAuth.getUser();
-            g && (i(u, g), a(!1));
+            const d = window.GitHubAuth.getUser();
+            d && (o(u, d), s(!1));
           }
-        }), a(!1);
-  }, [c, i]), n ? /* @__PURE__ */ o.jsx("div", { className: "loading", children: /* @__PURE__ */ o.jsxs("div", { style: { textAlign: "center" }, children: [
-    /* @__PURE__ */ o.jsx("div", { style: {
+        }), s(!1);
+  }, [l, o]), n ? /* @__PURE__ */ a.jsx("div", { className: "loading", children: /* @__PURE__ */ a.jsxs("div", { style: { textAlign: "center" }, children: [
+    /* @__PURE__ */ a.jsx("div", { style: {
       border: "4px solid rgba(255,255,255,0.3)",
       borderRadius: "50%",
       borderTopColor: "white",
@@ -621,11 +657,11 @@ function Ve({
       animation: "spin 1s linear infinite",
       margin: "0 auto 20px"
     } }),
-    /* @__PURE__ */ o.jsx("p", { children: "Initializing..." })
-  ] }) }) : s ? /* @__PURE__ */ o.jsx(o.Fragment, { children: t }) : /* @__PURE__ */ o.jsx("div", { className: "loading", children: /* @__PURE__ */ o.jsxs("div", { style: { textAlign: "center" }, children: [
-    /* @__PURE__ */ o.jsx("h2", { children: "Authentication Required" }),
-    /* @__PURE__ */ o.jsx("p", { style: { marginTop: 16, marginBottom: 24, opacity: 0.9 }, children: "Please sign in with GitHub to access the gallery" }),
-    /* @__PURE__ */ o.jsx(
+    /* @__PURE__ */ a.jsx("p", { children: "Initializing..." })
+  ] }) }) : i ? /* @__PURE__ */ a.jsx(a.Fragment, { children: r }) : /* @__PURE__ */ a.jsx("div", { className: "loading", children: /* @__PURE__ */ a.jsxs("div", { style: { textAlign: "center" }, children: [
+    /* @__PURE__ */ a.jsx("h2", { children: "Authentication Required" }),
+    /* @__PURE__ */ a.jsx("p", { style: { marginTop: 16, marginBottom: 24, opacity: 0.9 }, children: "Please sign in with GitHub to access the gallery" }),
+    /* @__PURE__ */ a.jsx(
       "button",
       {
         onClick: () => window.GitHubAuth.login(),
@@ -644,17 +680,17 @@ function Ve({
     )
   ] }) });
 }
-const me = (...t) => t.filter((r, i, s) => !!r && r.trim() !== "" && s.indexOf(r) === i).join(" ").trim();
-const ke = (t) => t.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
-const Se = (t) => t.replace(
+const pe = (...r) => r.filter((t, o, i) => !!t && t.trim() !== "" && i.indexOf(t) === o).join(" ").trim();
+const Se = (r) => r.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+const Re = (r) => r.replace(
   /^([A-Z])|[\s-_]+(\w)/g,
-  (r, i, s) => s ? s.toUpperCase() : i.toLowerCase()
+  (t, o, i) => i ? i.toUpperCase() : o.toLowerCase()
 );
-const ue = (t) => {
-  const r = Se(t);
-  return r.charAt(0).toUpperCase() + r.slice(1);
+const ue = (r) => {
+  const t = Re(r);
+  return t.charAt(0).toUpperCase() + t.slice(1);
 };
-var Re = {
+var Ae = {
   xmlns: "http://www.w3.org/2000/svg",
   width: 24,
   height: 24,
@@ -665,76 +701,76 @@ var Re = {
   strokeLinecap: "round",
   strokeLinejoin: "round"
 };
-const Ae = (t) => {
-  for (const r in t)
-    if (r.startsWith("aria-") || r === "role" || r === "title")
+const Ce = (r) => {
+  for (const t in r)
+    if (t.startsWith("aria-") || t === "role" || t === "title")
       return !0;
   return !1;
 };
 const Te = fe(
   ({
-    color: t = "currentColor",
-    size: r = 24,
-    strokeWidth: i = 2,
-    absoluteStrokeWidth: s,
+    color: r = "currentColor",
+    size: t = 24,
+    strokeWidth: o = 2,
+    absoluteStrokeWidth: i,
     className: n = "",
-    children: a,
-    iconNode: c,
-    ...l
+    children: s,
+    iconNode: l,
+    ...c
   }, u) => K(
     "svg",
     {
       ref: u,
-      ...Re,
-      width: r,
-      height: r,
-      stroke: t,
-      strokeWidth: s ? Number(i) * 24 / Number(r) : i,
-      className: me("lucide", n),
-      ...!a && !Ae(l) && { "aria-hidden": "true" },
-      ...l
+      ...Ae,
+      width: t,
+      height: t,
+      stroke: r,
+      strokeWidth: i ? Number(o) * 24 / Number(t) : o,
+      className: pe("lucide", n),
+      ...!s && !Ce(c) && { "aria-hidden": "true" },
+      ...c
     },
     [
-      ...c.map(([g, y]) => K(g, y)),
-      ...Array.isArray(a) ? a : [a]
+      ...l.map(([d, y]) => K(d, y)),
+      ...Array.isArray(s) ? s : [s]
     ]
   )
 );
-const z = (t, r) => {
-  const i = fe(
-    ({ className: s, ...n }, a) => K(Te, {
-      ref: a,
-      iconNode: r,
-      className: me(
-        `lucide-${ke(ue(t))}`,
-        `lucide-${t}`,
-        s
+const H = (r, t) => {
+  const o = fe(
+    ({ className: i, ...n }, s) => K(Te, {
+      ref: s,
+      iconNode: t,
+      className: pe(
+        `lucide-${Se(ue(r))}`,
+        `lucide-${r}`,
+        i
       ),
       ...n
     })
   );
-  return i.displayName = ue(t), i;
+  return o.displayName = ue(r), o;
 };
-const Ce = [
+const Ne = [
   ["path", { d: "M5 12h14", key: "1ays0h" }],
   ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
-], Ne = z("arrow-right", Ce);
-const Oe = [
+], Oe = H("arrow-right", Ne);
+const $e = [
   ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
   ["line", { x1: "12", x2: "12", y1: "8", y2: "12", key: "1pkeuh" }],
   ["line", { x1: "12", x2: "12.01", y1: "16", y2: "16", key: "4dfq90" }]
-], $e = z("circle-alert", Oe);
-const Ie = [
+], Ie = H("circle-alert", $e);
+const Pe = [
   ["path", { d: "m16 17 5-5-5-5", key: "1bji2h" }],
   ["path", { d: "M21 12H9", key: "dn1m92" }],
   ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }]
-], Pe = z("log-out", Ie);
-const Le = [
+], Le = H("log-out", Pe);
+const Me = [
   ["path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", key: "v9h5vc" }],
   ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
   ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
   ["path", { d: "M8 16H3v5", key: "1cv678" }]
-], Me = z("refresh-cw", Le);
+], ze = H("refresh-cw", Me);
 const De = [
   [
     "path",
@@ -752,92 +788,92 @@ const De = [
   ],
   ["path", { d: "M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0", key: "1f8sc4" }],
   ["path", { d: "M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5", key: "qeys4" }]
-], de = z("rocket", De);
+], de = H("rocket", De);
 const Fe = [
   ["path", { d: "M10 11v6", key: "nco0om" }],
   ["path", { d: "M14 11v6", key: "outv1u" }],
   ["path", { d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6", key: "miytrc" }],
   ["path", { d: "M3 6h18", key: "d0wm0j" }],
   ["path", { d: "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2", key: "e791ji" }]
-], ze = z("trash-2", Fe);
-function X({ user: t, onLogout: r, onClearCache: i }) {
-  const [s, n] = O(!1), a = he(null);
+], He = H("trash-2", Fe);
+function X({ user: r, onLogout: t, onClearCache: o }) {
+  const [i, n] = I(!1), s = he(null);
   F(() => {
-    function l(u) {
-      a.current && !a.current.contains(u.target) && n(!1);
+    function c(u) {
+      s.current && !s.current.contains(u.target) && n(!1);
     }
-    return document.addEventListener("click", l), () => document.removeEventListener("click", l);
+    return document.addEventListener("click", c), () => document.removeEventListener("click", c);
   }, []);
-  const c = () => {
-    confirm("Clear all cached data? Apps will reload from the repository.") && (i(), window.location.reload());
+  const l = () => {
+    confirm("Clear all cached data? Apps will reload from the repository.") && (o(), window.location.reload());
   };
-  return t ? /* @__PURE__ */ o.jsxs("div", { ref: a, style: { position: "relative" }, children: [
-    /* @__PURE__ */ o.jsxs(
+  return r ? /* @__PURE__ */ a.jsxs("div", { ref: s, style: { position: "relative" }, children: [
+    /* @__PURE__ */ a.jsxs(
       "div",
       {
         className: "user-pill",
-        onClick: () => n(!s),
+        onClick: () => n(!i),
         children: [
-          /* @__PURE__ */ o.jsx(
+          /* @__PURE__ */ a.jsx(
             "img",
             {
-              src: t.avatar_url,
-              alt: t.login,
+              src: r.avatar_url,
+              alt: r.login,
               className: "user-avatar"
             }
           ),
-          /* @__PURE__ */ o.jsx("span", { style: { fontWeight: 500, fontSize: "14px" }, children: t.name || t.login })
+          /* @__PURE__ */ a.jsx("span", { style: { fontWeight: 500, fontSize: "14px" }, children: r.name || r.login })
         ]
       }
     ),
-    /* @__PURE__ */ o.jsxs("div", { className: `user-menu ${s ? "show" : ""}`, children: [
-      /* @__PURE__ */ o.jsxs("button", { onClick: () => window.location.reload(), children: [
-        /* @__PURE__ */ o.jsx(Me, { size: 16 }),
+    /* @__PURE__ */ a.jsxs("div", { className: `user-menu ${i ? "show" : ""}`, children: [
+      /* @__PURE__ */ a.jsxs("button", { onClick: () => window.location.reload(), children: [
+        /* @__PURE__ */ a.jsx(ze, { size: 16 }),
         " Refresh"
       ] }),
-      /* @__PURE__ */ o.jsxs("button", { onClick: c, children: [
-        /* @__PURE__ */ o.jsx(ze, { size: 16 }),
+      /* @__PURE__ */ a.jsxs("button", { onClick: l, children: [
+        /* @__PURE__ */ a.jsx(He, { size: 16 }),
         " Clear Cache"
       ] }),
-      /* @__PURE__ */ o.jsxs("button", { onClick: r, children: [
-        /* @__PURE__ */ o.jsx(Pe, { size: 16 }),
+      /* @__PURE__ */ a.jsxs("button", { onClick: t, children: [
+        /* @__PURE__ */ a.jsx(Le, { size: 16 }),
         " Logout"
       ] })
     ] })
   ] }) : null;
 }
-function He(t, r) {
-  if (!t?.minLauncherVersion || !r) return null;
-  const i = r.split(".").map(Number), s = t.minLauncherVersion.split(".").map(Number);
+function Ue(r, t) {
+  if (!r?.minLauncherVersion || !t) return null;
+  const o = t.split(".").map(Number), i = r.minLauncherVersion.split(".").map(Number);
   for (let n = 0; n < 3; n++) {
-    if (i[n] < s[n])
-      return `Requires launcher v${t.minLauncherVersion}`;
-    if (i[n] > s[n]) return null;
+    if (o[n] < i[n])
+      return `Requires launcher v${r.minLauncherVersion}`;
+    if (o[n] > i[n]) return null;
   }
   return null;
 }
-function Ue({ appName: t, manifest: r, path: i, onLaunch: s, version: n }) {
-  if (!r)
-    return /* @__PURE__ */ o.jsx("div", { className: "app-card", children: /* @__PURE__ */ o.jsxs("div", { className: "app-card-body", children: [
-      /* @__PURE__ */ o.jsx("h3", { children: t }),
-      /* @__PURE__ */ o.jsx("p", { style: { color: "#ccc" }, children: "Loading..." })
+function We({ appName: r, manifest: t, path: o, onLaunch: i, version: n }) {
+  if (!t)
+    return /* @__PURE__ */ a.jsx("div", { className: "app-card", children: /* @__PURE__ */ a.jsxs("div", { className: "app-card-body", children: [
+      /* @__PURE__ */ a.jsx("h3", { children: r }),
+      /* @__PURE__ */ a.jsx("p", { style: { color: "#ccc" }, children: "Loading..." })
     ] }) });
-  const a = He(r, n);
-  return /* @__PURE__ */ o.jsxs("div", { className: "app-card", children: [
-    r.thumbnail && /* @__PURE__ */ o.jsx(
+  const s = Ue(t, n);
+  return /* @__PURE__ */ a.jsxs("div", { className: "app-card", children: [
+    t.thumbnail && /* @__PURE__ */ a.jsx(
       "img",
       {
-        src: r.thumbnail,
-        alt: r.name,
-        onError: (c) => {
-          c.currentTarget.style.display = "none";
+        src: t.thumbnail,
+        alt: t.name,
+        onError: (l) => {
+          l.currentTarget.style.display = "none";
         }
       }
     ),
-    /* @__PURE__ */ o.jsxs("div", { className: "app-card-body", children: [
-      /* @__PURE__ */ o.jsx("h3", { children: r.name }),
-      /* @__PURE__ */ o.jsx("p", { children: r.description }),
-      a && /* @__PURE__ */ o.jsxs("div", { style: {
+    /* @__PURE__ */ a.jsxs("div", { className: "app-card-body", children: [
+      /* @__PURE__ */ a.jsx("h3", { children: t.name }),
+      /* @__PURE__ */ a.jsx("p", { children: t.description }),
+      s && /* @__PURE__ */ a.jsxs("div", { style: {
         color: "#f59e0b",
         fontSize: "13px",
         marginBottom: "12px",
@@ -845,95 +881,102 @@ function Ue({ appName: t, manifest: r, path: i, onLaunch: s, version: n }) {
         alignItems: "center",
         gap: "6px"
       }, children: [
-        /* @__PURE__ */ o.jsx($e, { size: 16 }),
+        /* @__PURE__ */ a.jsx(Ie, { size: 16 }),
         " ",
-        a
+        s
       ] }),
-      r.tech && r.tech.length > 0 && /* @__PURE__ */ o.jsx("div", { className: "app-meta", children: r.tech.map((c) => /* @__PURE__ */ o.jsx("span", { className: "badge", children: c }, c)) }),
-      /* @__PURE__ */ o.jsxs(
+      t.tech && t.tech.length > 0 && /* @__PURE__ */ a.jsx("div", { className: "app-meta", children: t.tech.map((l) => /* @__PURE__ */ a.jsx("span", { className: "badge", children: l }, l)) }),
+      /* @__PURE__ */ a.jsxs(
         "button",
         {
-          onClick: () => s(i, r.name),
+          onClick: () => i(o, t.name),
           className: "launch-btn",
           children: [
             "Launch App ",
-            /* @__PURE__ */ o.jsx(Ne, { size: 16 })
+            /* @__PURE__ */ a.jsx(Oe, { size: 16 })
           ]
         }
       )
     ] })
   ] });
 }
-function Be({
-  config: t,
-  user: r,
-  token: i,
-  useGitHubAPI: s,
+function Xe({
+  config: r,
+  user: t,
+  token: o,
+  useGitHubAPI: i,
   onLogout: n,
-  onClearCache: a,
-  onTrack: c
+  onClearCache: s,
+  onTrack: l,
+  onNavigate: c
 }) {
-  const [l, u] = O([]), [g, y] = O(!0), [x, j] = O(null), [b, k] = O(null), [$, m] = O(!1), [T, C] = O(!1), f = s(t.repository.owner, t.repository.name), d = he(null);
+  const [u, d] = I([]), [y, b] = I(!0), [j, k] = I(null), [_, N] = I(null), [g, R] = I(!1), [O, h] = I(!1), m = i(r.repository.owner, r.repository.name), p = he(null);
   F(() => {
-    p();
+    A();
   }, []), F(() => {
-    function w(R) {
-      R.key === "Escape" && b && I();
+    function x(C) {
+      C.key === "Escape" && _ && Y();
     }
-    return window.addEventListener("keydown", w), () => window.removeEventListener("keydown", w);
-  }, [b]), F(() => {
-    function w(R) {
-      R.data === "close-app" && I();
+    return window.addEventListener("keydown", x), () => window.removeEventListener("keydown", x);
+  }, [_]), F(() => {
+    function x(C) {
+      C.data === "close-app" && Y();
     }
-    return window.addEventListener("message", w), () => window.removeEventListener("message", w);
+    return window.addEventListener("message", x), () => window.removeEventListener("message", x);
   }, []);
-  const p = async () => {
+  const A = async () => {
     try {
-      y(!0);
-      const R = (await f.listDirectory("apps")).filter((A) => A.type === "dir"), L = R.map((A) => ({
-        name: A.name,
-        path: A.path,
+      b(!0);
+      const C = (await m.listDirectory("apps")).filter((S) => S.type === "dir"), P = C.map((S) => ({
+        name: S.name,
+        path: S.path,
         manifest: null
       }));
-      u(L);
-      for (let A = 0; A < R.length; A++) {
-        await new Promise((M) => setTimeout(M, A * 100));
-        const P = await f.getManifest(R[A].path);
-        P && u((M) => M.map(
-          (H) => H.name === R[A].name ? { ...H, manifest: P } : H
+      d(P);
+      for (let S = 0; S < C.length; S++) {
+        await new Promise((z) => setTimeout(z, S * 100));
+        const M = await m.getManifest(C[S].path);
+        M && d((z) => z.map(
+          ($) => $.name === C[S].name ? { ...$, manifest: M } : $
         ));
       }
-      y(!1);
-    } catch (w) {
-      j(w.message), y(!1);
+      b(!1);
+    } catch (x) {
+      k(x.message), b(!1);
     }
-  }, S = N(async (w, R) => {
+  }, L = T(async (x, C) => {
     try {
-      m(!0), k({ path: w, name: R }), c?.("app_launch", { appName: R, appPath: w });
-      const L = await f.getFile(`${w}/index.html`), A = `<script>
-        window.INJECTED_TOKEN = ${JSON.stringify(i)};
-        window.INJECTED_USER = ${JSON.stringify(r)};
+      R(!0), l?.("app_launch", { appName: C, appPath: x });
+      const P = u.find(($) => $.path === x)?.manifest;
+      if (P?.reactRoute && c) {
+        c(P.reactRoute), R(!1);
+        return;
+      }
+      N({ path: x, name: C });
+      const S = await m.getFile(`${x}/index.html`), M = `<script>
+        window.INJECTED_TOKEN = ${JSON.stringify(o)};
+        window.INJECTED_USER = ${JSON.stringify(t)};
         window.PARENT_REPO = window.parent.repo;
-      <\/script>`, P = L.content.replace("<head>", "<head>" + A);
-      d.current && (d.current.srcdoc = P, d.current.onload = () => {
-        m(!1), C(!0), setTimeout(() => C(!1), 3e3);
+      <\/script>`, z = S.content.replace("<head>", "<head>" + M);
+      p.current && (p.current.srcdoc = z, p.current.onload = () => {
+        R(!1), h(!0), setTimeout(() => h(!1), 3e3);
       });
-    } catch (L) {
-      alert(`Error loading app: ${L.message}`), m(!1), k(null);
+    } catch (P) {
+      alert(`Error loading app: ${P.message}`), R(!1), N(null);
     }
-  }, [f, i, r, c]), I = N(() => {
-    k(null), C(!1), d.current && (d.current.srcdoc = "");
+  }, [m, o, t, l, u, c]), Y = T(() => {
+    N(null), h(!1), p.current && (p.current.srcdoc = "");
   }, []);
-  return g && l.length === 0 ? /* @__PURE__ */ o.jsxs("div", { children: [
-    /* @__PURE__ */ o.jsx(X, { user: r, onLogout: n, onClearCache: a }),
-    /* @__PURE__ */ o.jsxs("div", { style: {
-      background: `linear-gradient(135deg, ${t.branding.theme.primary} 0%, ${t.branding.theme.secondary} 100%)`,
+  return y && u.length === 0 ? /* @__PURE__ */ a.jsxs("div", { children: [
+    /* @__PURE__ */ a.jsx(X, { user: t, onLogout: n, onClearCache: s }),
+    /* @__PURE__ */ a.jsxs("div", { style: {
+      background: `linear-gradient(135deg, ${r.branding.theme.primary} 0%, ${r.branding.theme.secondary} 100%)`,
       color: "white",
       padding: "48px 20px",
       textAlign: "center",
       marginBottom: "48px"
     }, children: [
-      /* @__PURE__ */ o.jsxs("h1", { style: {
+      /* @__PURE__ */ a.jsxs("h1", { style: {
         margin: "0 0 8px 0",
         fontSize: "2.5em",
         fontWeight: 600,
@@ -942,14 +985,14 @@ function Be({
         justifyContent: "center",
         gap: "12px"
       }, children: [
-        /* @__PURE__ */ o.jsx(de, { size: 32 }),
+        /* @__PURE__ */ a.jsx(de, { size: 32 }),
         " ",
-        t.branding.title
+        r.branding.title
       ] }),
-      /* @__PURE__ */ o.jsx("p", { style: { margin: 0, opacity: 0.95, fontSize: "1.05em" }, children: t.branding.subtitle })
+      /* @__PURE__ */ a.jsx("p", { style: { margin: 0, opacity: 0.95, fontSize: "1.05em" }, children: r.branding.subtitle })
     ] }),
-    /* @__PURE__ */ o.jsx("div", { className: "loading", children: /* @__PURE__ */ o.jsxs("div", { style: { textAlign: "center" }, children: [
-      /* @__PURE__ */ o.jsx("div", { style: {
+    /* @__PURE__ */ a.jsx("div", { className: "loading", children: /* @__PURE__ */ a.jsxs("div", { style: { textAlign: "center" }, children: [
+      /* @__PURE__ */ a.jsx("div", { style: {
         border: "4px solid rgba(255,255,255,0.3)",
         borderRadius: "50%",
         borderTopColor: "white",
@@ -958,25 +1001,25 @@ function Be({
         animation: "spin 1s linear infinite",
         margin: "0 auto 20px"
       } }),
-      /* @__PURE__ */ o.jsx("p", { children: "Loading applications..." })
+      /* @__PURE__ */ a.jsx("p", { children: "Loading applications..." })
     ] }) })
-  ] }) : x ? /* @__PURE__ */ o.jsxs("div", { children: [
-    /* @__PURE__ */ o.jsx(X, { user: r, onLogout: n, onClearCache: a }),
-    /* @__PURE__ */ o.jsxs("div", { className: "error", children: [
-      /* @__PURE__ */ o.jsx("strong", { children: "Error:" }),
+  ] }) : j ? /* @__PURE__ */ a.jsxs("div", { children: [
+    /* @__PURE__ */ a.jsx(X, { user: t, onLogout: n, onClearCache: s }),
+    /* @__PURE__ */ a.jsxs("div", { className: "error", children: [
+      /* @__PURE__ */ a.jsx("strong", { children: "Error:" }),
       " ",
-      x
+      j
     ] })
-  ] }) : /* @__PURE__ */ o.jsxs("div", { children: [
-    /* @__PURE__ */ o.jsx(X, { user: r, onLogout: n, onClearCache: a }),
-    /* @__PURE__ */ o.jsxs("div", { style: {
-      background: `linear-gradient(135deg, ${t.branding.theme.primary} 0%, ${t.branding.theme.secondary} 100%)`,
+  ] }) : /* @__PURE__ */ a.jsxs("div", { children: [
+    /* @__PURE__ */ a.jsx(X, { user: t, onLogout: n, onClearCache: s }),
+    /* @__PURE__ */ a.jsxs("div", { style: {
+      background: `linear-gradient(135deg, ${r.branding.theme.primary} 0%, ${r.branding.theme.secondary} 100%)`,
       color: "white",
       padding: "48px 20px",
       textAlign: "center",
       marginBottom: "48px"
     }, children: [
-      /* @__PURE__ */ o.jsxs("h1", { style: {
+      /* @__PURE__ */ a.jsxs("h1", { style: {
         margin: "0 0 8px 0",
         fontSize: "2.5em",
         fontWeight: 600,
@@ -985,34 +1028,34 @@ function Be({
         justifyContent: "center",
         gap: "12px"
       }, children: [
-        /* @__PURE__ */ o.jsx(de, { size: 32 }),
+        /* @__PURE__ */ a.jsx(de, { size: 32 }),
         " ",
-        t.branding.title
+        r.branding.title
       ] }),
-      /* @__PURE__ */ o.jsx("p", { style: { margin: 0, opacity: 0.95, fontSize: "1.05em" }, children: t.branding.subtitle })
+      /* @__PURE__ */ a.jsx("p", { style: { margin: 0, opacity: 0.95, fontSize: "1.05em" }, children: r.branding.subtitle })
     ] }),
-    /* @__PURE__ */ o.jsx("div", { className: "app-grid", children: l.map((w) => /* @__PURE__ */ o.jsx(
-      Ue,
+    /* @__PURE__ */ a.jsx("div", { className: "app-grid", children: u.map((x) => /* @__PURE__ */ a.jsx(
+      We,
       {
-        appName: w.name,
-        manifest: w.manifest,
-        path: w.path,
-        onLaunch: S
+        appName: x.name,
+        manifest: x.manifest,
+        path: x.path,
+        onLaunch: L
       },
-      w.name
+      x.name
     )) }),
-    b && /* @__PURE__ */ o.jsxs(o.Fragment, { children: [
-      /* @__PURE__ */ o.jsx(
+    _ && /* @__PURE__ */ a.jsxs(a.Fragment, { children: [
+      /* @__PURE__ */ a.jsx(
         "iframe",
         {
-          ref: d,
+          ref: p,
           className: "app-frame",
           style: { display: "block" },
-          title: b.name
+          title: _.name
         }
       ),
-      $ && /* @__PURE__ */ o.jsx("div", { className: "app-loader", style: { display: "flex" }, children: /* @__PURE__ */ o.jsxs("div", { style: { textAlign: "center" }, children: [
-        /* @__PURE__ */ o.jsx("div", { style: {
+      g && /* @__PURE__ */ a.jsx("div", { className: "app-loader", style: { display: "flex" }, children: /* @__PURE__ */ a.jsxs("div", { style: { textAlign: "center" }, children: [
+        /* @__PURE__ */ a.jsx("div", { style: {
           border: "4px solid rgba(255,255,255,0.3)",
           borderRadius: "50%",
           borderTopColor: "white",
@@ -1021,20 +1064,69 @@ function Be({
           animation: "spin 1s linear infinite",
           margin: "0 auto 20px"
         } }),
-        /* @__PURE__ */ o.jsx("p", { children: "Loading app..." })
+        /* @__PURE__ */ a.jsx("p", { children: "Loading app..." })
       ] }) }),
-      /* @__PURE__ */ o.jsx("div", { className: `hint ${T ? "visible" : ""}`, children: "Press ESC to return to gallery" })
+      /* @__PURE__ */ a.jsx("div", { className: `hint ${O ? "visible" : ""}`, children: "Press ESC to return to gallery" })
     ] })
   ] });
 }
+class Ke extends ye {
+  constructor(t) {
+    super(t), this.state = { hasError: !1, error: null };
+  }
+  static getDerivedStateFromError(t) {
+    return { hasError: !0, error: t };
+  }
+  componentDidCatch(t, o) {
+    const i = {
+      message: t.message,
+      stack: t.stack,
+      componentStack: o.componentStack || void 0,
+      timestamp: Date.now(),
+      appName: this.props.appName
+    };
+    this.props.onError && this.props.onError(i), console.error("[ErrorBoundary] Caught error:", i);
+  }
+  render() {
+    return this.state.hasError ? this.props.fallback ? this.props.fallback : /* @__PURE__ */ a.jsxs("div", { style: {
+      padding: "40px 20px",
+      textAlign: "center",
+      color: "#ef4444",
+      background: "#fef2f2",
+      borderRadius: "8px",
+      margin: "20px"
+    }, children: [
+      /* @__PURE__ */ a.jsx("h2", { style: { margin: "0 0 12px", fontSize: "1.25rem", fontWeight: 600 }, children: "Something went wrong" }),
+      /* @__PURE__ */ a.jsx("p", { style: { margin: "0 0 16px", color: "#991b1b", fontSize: "0.875rem" }, children: this.state.error?.message || "An unexpected error occurred" }),
+      /* @__PURE__ */ a.jsx(
+        "button",
+        {
+          onClick: () => window.location.reload(),
+          style: {
+            padding: "8px 16px",
+            background: "#ef4444",
+            color: "white",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+            fontSize: "0.875rem",
+            fontWeight: 500
+          },
+          children: "Reload Page"
+        }
+      )
+    ] }) : this.props.children;
+  }
+}
 export {
-  Ue as AppCard,
-  Be as AppShell,
-  Ve as OAuth,
+  We as AppCard,
+  Xe as AppShell,
+  Ke as ErrorBoundary,
+  Be as OAuth,
   X as UserMenu,
-  Ge as createAnalyticsStore,
+  qe as createAnalyticsStore,
   Ye as createAuthStore,
-  We as createCacheStore,
-  qe as createGitHubAPIHook
+  Ge as createCacheStore,
+  Ve as createGitHubAPIHook
 };
 //# sourceMappingURL=framework.es.js.map
