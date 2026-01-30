@@ -27,7 +27,7 @@
 <body>
   <div class="header">
     <h2>📁 File Browser</h2>
-    <button class="btn" onclick="location.reload()">← Back to Gallery</button>
+    <button class="btn" onclick="window.parent.postMessage('close-app', '*')">← Back to Gallery</button>
   </div>
 
   <div class="container">
@@ -48,7 +48,7 @@
       onLogin: async (user) => {
         // Load GitHub API utility
         const response = await fetch(
-          'https://api.github.com/repos/jonasneves/duke-capstone/contents/shared/utils/github-api.js',
+          'https://api.github.com/repos/jonasneves/duke-capstone/contents/shared/core/api.js',
           { headers: { 'Authorization': `Bearer ${GitHubAuth.getToken()}` }}
         );
         const data = await response.json();
@@ -78,16 +78,15 @@
 
     function renderBreadcrumb() {
       const parts = currentPath.split('/').filter(Boolean);
-      let html = '<a href="#" onclick="loadDirectory(\'\'); return false;">🏠 root</a>';
+      const links = ['<a href="#" onclick="loadDirectory(\'\'); return false;">root</a>'];
 
       let pathSoFar = '';
-      parts.forEach(part => {
-        pathSoFar += (pathSoFar ? '/' : '') + part;
-        const path = pathSoFar;
-        html += ` / <a href="#" onclick="loadDirectory('${path}'); return false;">${part}</a>`;
-      });
+      for (const part of parts) {
+        pathSoFar = pathSoFar ? pathSoFar + '/' + part : part;
+        links.push(`<a href="#" onclick="loadDirectory('${pathSoFar}'); return false;">${part}</a>`);
+      }
 
-      document.getElementById('breadcrumb').innerHTML = html;
+      document.getElementById('breadcrumb').innerHTML = links.join(' / ');
     }
 
     function renderFiles(files) {

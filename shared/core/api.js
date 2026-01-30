@@ -41,11 +41,8 @@ class GitHubRepo {
   }
 
   clearCache() {
-    for (const key of Object.keys(localStorage)) {
-      if (key.startsWith(this.cachePrefix)) {
-        localStorage.removeItem(key);
-      }
-    }
+    const keys = Object.keys(localStorage).filter((key) => key.startsWith(this.cachePrefix));
+    keys.forEach((key) => localStorage.removeItem(key));
   }
 
   async request(path, options = {}) {

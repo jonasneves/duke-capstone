@@ -114,7 +114,11 @@ class Analytics {
   getMostUsedApp(launches) {
     const entries = Object.entries(launches);
     if (entries.length === 0) return null;
-    return entries.reduce((a, b) => b[1] > a[1] ? b : a)[0];
+
+    return entries.reduce((max, [app, count]) =>
+      count > max.count ? { app, count } : max,
+      { app: null, count: 0 }
+    ).app;
   }
 
   clear() {
