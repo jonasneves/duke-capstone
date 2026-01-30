@@ -1,4 +1,4 @@
-import { ArrowRight, AlertCircle } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import type { AppManifest } from '../types';
 
 interface AppCardProps {
@@ -6,25 +6,9 @@ interface AppCardProps {
   manifest: AppManifest | null;
   path: string;
   onLaunch: (path: string, name: string) => void;
-  version?: string;
 }
 
-function checkVersionCompatibility(manifest: AppManifest | null, currentVersion?: string): string | null {
-  if (!manifest?.minLauncherVersion || !currentVersion) return null;
-
-  const current = currentVersion.split('.').map(Number);
-  const required = manifest.minLauncherVersion.split('.').map(Number);
-
-  for (let i = 0; i < 3; i++) {
-    if (current[i] < required[i]) {
-      return `Requires launcher v${manifest.minLauncherVersion}`;
-    }
-    if (current[i] > required[i]) return null;
-  }
-  return null;
-}
-
-export function AppCard({ appName, manifest, path, onLaunch, version }: AppCardProps) {
+export function AppCard({ appName, manifest, path, onLaunch }: AppCardProps) {
   if (!manifest) {
     return (
       <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
@@ -35,8 +19,6 @@ export function AppCard({ appName, manifest, path, onLaunch, version }: AppCardP
       </div>
     );
   }
-
-  const versionWarning = checkVersionCompatibility(manifest, version);
 
   return (
     <div className="bg-white rounded-xl border border-neutral-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 overflow-hidden group flex flex-col h-full">
@@ -57,13 +39,6 @@ export function AppCard({ appName, manifest, path, onLaunch, version }: AppCardP
       <div className="p-4 flex flex-col flex-1">
         <h3 className="text-base font-semibold text-neutral-900 mb-1">{manifest.name}</h3>
         <p className="text-neutral-600 text-xs leading-relaxed mb-3 line-clamp-2">{manifest.description}</p>
-
-        {versionWarning && (
-          <div className="flex items-center gap-1.5 text-amber-600 text-xs mb-3 bg-amber-50 px-2 py-1.5 rounded">
-            <AlertCircle size={12} />
-            <span className="text-[10px]">{versionWarning}</span>
-          </div>
-        )}
 
         {manifest.tech && manifest.tech.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-3">

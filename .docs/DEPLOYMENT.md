@@ -2,7 +2,7 @@
 
 ## GitHub Actions (Automatic)
 
-Push to main triggers workflow. Deploys to gh-pages at playground.neevs.io.
+Push to main triggers workflow. Deploys to gh-pages at neevs.io.
 
 ## Manual
 

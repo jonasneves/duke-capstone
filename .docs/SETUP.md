@@ -5,7 +5,7 @@
 https://github.com/settings/developers → New OAuth App
 
 - Application name: Playground
-- Homepage URL: `https://playground.neevs.io`
+- Homepage URL: `https://neevs.io`
 - Authorization callback URL: `https://oauth.neevs.io/callback`
 
 Copy Client ID and Client Secret.
@@ -26,7 +26,7 @@ git push origin main
 ## Architecture
 
 ```
-playground.neevs.io → github-auth.js → oauth.neevs.io → GitHub OAuth
+neevs.io → github-auth.js → oauth.neevs.io → GitHub OAuth
 ```
 
 Branches:

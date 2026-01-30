@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { CheckCircle2, Circle, ListTodo } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { PillToggle } from './PillToggle';
+import { PillToggle } from '@/framework/components/PillToggle';
 import { AddTodo } from './AddTodo';
 import { TodoItem } from './TodoItem';
 import type { Todo, FilterType } from './types';

@@ -11,7 +11,7 @@ interface OAuthProps {
 declare global {
   interface Window {
     GitHubAuth: {
-      init: (config: { scope: string; onLogin: (token: string) => void }) => void;
+      init: (config: { scope?: string; autoRedirect?: boolean; onLogin: (token: string) => void }) => Promise<void>;
       isAuthenticated: () => boolean;
       getUser: () => any;
       getToken: () => string | null;
@@ -113,7 +113,7 @@ export function OAuth({
     }
   }, [scriptLoaded, onAuthChange]);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!scriptLoaded) {
       // Load script on-demand when user clicks login
       setIsLoading(true);
@@ -122,10 +122,11 @@ export function OAuth({
       script.async = true;
 
       script.onload = () => {
-        setTimeout(() => {
+        setTimeout(async () => {
           if (window.GitHubAuth) {
-            window.GitHubAuth.init({
+            await window.GitHubAuth.init({
               scope: 'repo',
+              autoRedirect: false,
               onLogin: (token: string) => {
                 const user = window.GitHubAuth.getUser();
                 if (user) {
@@ -143,8 +144,9 @@ export function OAuth({
       document.head.appendChild(script);
     } else {
       if (!authInitialized && window.GitHubAuth) {
-        window.GitHubAuth.init({
+        await window.GitHubAuth.init({
           scope: 'repo',
+          autoRedirect: false,
           onLogin: (token: string) => {
             const user = window.GitHubAuth.getUser();
             if (user) {

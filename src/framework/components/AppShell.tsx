@@ -10,7 +10,6 @@ type FilterType = 'all' | 'productivity' | 'content';
 interface AppShellProps {
   config: FrameworkConfig;
   user: User | null;
-  token: string | null;
   onLogout: () => void;
   onClearCache: () => void;
   onTrack?: (event: string, data?: Record<string, any>) => void;
