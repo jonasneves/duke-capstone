@@ -3,12 +3,12 @@ export const AppConfig = {
 
   repository: {
     owner: 'jonasneves',
-    name: 'duke-capstone'
+    name: 'playground'
   },
 
   branding: {
-    title: 'Prototype Gallery',
-    subtitle: 'Your private collection of experimental applications',
+    title: 'Playground',
+    subtitle: 'Your experimental app workspace',
     theme: {
       primary: '#6366f1',
       secondary: '#8b5cf6'

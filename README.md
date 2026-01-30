@@ -1,10 +1,10 @@
-# Duke Capstone
+# Playground
 
-Private prototype gallery with GitHub OAuth authentication.
+An experimental app platform powered by GitHub. Build, iterate, and deploy apps rapidly with GitHub OAuth authentication and API-driven content delivery.
 
 ## Architecture
 
-Public gh-pages branch contains authentication shell. After OAuth login, apps load dynamically from private main branch via GitHub Contents API.
+React-based launcher with lazy-loaded apps. All apps are stored in GitHub and loaded dynamically via the Contents API.
 
 ## Constraints
 

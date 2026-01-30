@@ -1,7 +1,7 @@
 {
-  "name": "duke-capstone",
+  "name": "playground",
   "version": "1.0.0",
-  "description": "A private prototype gallery powered by GitHub Pages and GitHub API. All content is protected behind GitHub OAuth with repository-level access control.",
+  "description": "An experimental app platform powered by GitHub Pages and GitHub API. A fluid workspace for rapidly building and iterating on applications.",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -10,16 +10,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jonasneves/duke-capstone.git"
+    "url": "git+https://github.com/jonasneves/playground.git"
   },
-  "keywords": [],
+  "keywords": ["playground", "apps", "github-pages", "react", "experimental"],
   "author": "",
   "license": "ISC",
   "type": "module",
   "bugs": {
-    "url": "https://github.com/jonasneves/duke-capstone/issues"
+    "url": "https://github.com/jonasneves/playground/issues"
   },
-  "homepage": "https://github.com/jonasneves/duke-capstone#readme",
+  "homepage": "https://github.com/jonasneves/playground#readme",
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
     "@types/react": "^19.2.10",
