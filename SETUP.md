@@ -46,9 +46,13 @@ Visit https://capstone.neevs.io - you should be redirected to GitHub for authent
 
 ### Quick Start (3 steps)
 
-1. **Include the library**
+1. **Include the library** (with SRI for security)
 ```html
-<script src="https://capstone.neevs.io/github-auth.js"></script>
+<script
+  src="https://oauth.neevs.io/github-auth.js"
+  integrity="sha384-xjyIjlLvlDtUo/qI+yzJfTB6+jl9A7tHTRaGO9CwUa2C9llsA7A5pFDsO3ATKKdu"
+  crossorigin="anonymous">
+</script>
 ```
 
 2. **Initialize**
