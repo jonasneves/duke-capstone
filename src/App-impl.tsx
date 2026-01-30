@@ -3,7 +3,6 @@ import { OAuth, AppShell } from '@/framework';
 import { useAuthStore, useCacheStore, useAnalyticsStore } from '@/stores';
 import { useGitHubAPI } from '@/hooks';
 import { AppConfig } from '@/config/app';
-import './styles/global.css';
 
 function App() {
   const navigate = useNavigate();
