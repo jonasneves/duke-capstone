@@ -110,10 +110,26 @@ Your Site (capstone.neevs.io)
   GitHub OAuth
 ```
 
+## Architecture
+
+**Branch Strategy:**
+- `main` - Private branch with protected content in `/content/`
+- `gh-pages` - Public branch with only shell (index.html, CNAME)
+
+**Library Dependency:**
+- `github-auth.js` loaded from `oauth.neevs.io` (centralized)
+- Protected by SRI (Subresource Integrity) hash
+- Update SRI when library changes:
+  ```bash
+  curl https://oauth.neevs.io/github-auth.js | \
+    openssl dgst -sha384 -binary | openssl base64 -A
+  ```
+
 ## Security Notes
 
-- Client secrets are stored server-side in the OAuth proxy
-- Tokens are stored in localStorage (client-side)
-- Each project should have its own OAuth app
-- The proxy handles token exchange securely
-- Tokens are validated against GitHub API on each page load
+- Repository is private - content only accessible via GitHub API
+- Client secrets stored server-side in OAuth proxy
+- OAuth tokens scoped to `read:user repo` for API access
+- Content fetched from private repo, not served as static files
+- Tokens validated against GitHub API on each page load
+- SRI hash prevents library tampering
