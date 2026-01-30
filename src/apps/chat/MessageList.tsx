@@ -53,7 +53,7 @@ export function MessageList({ messages }: MessageListProps) {
           </div>
           <h2 className="text-xl font-bold text-neutral-900 mb-2">AI Chat</h2>
           <p className="text-sm text-neutral-500 max-w-sm">
-            Start a conversation with AI models powered by GitHub
+            Start a conversation with AI
           </p>
         </div>
       ) : (

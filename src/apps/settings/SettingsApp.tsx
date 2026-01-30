@@ -162,7 +162,7 @@ export default function SettingsApp() {
         {/* Storage */}
         <SettingCard title="Storage">
           <StorageBar
-            label="LocalStorage"
+            label="Data Usage"
             used={storageUsed}
             total={storageLimit}
             unit="KB"
