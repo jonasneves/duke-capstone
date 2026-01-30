@@ -87,8 +87,8 @@ export default function ChatApp() {
   }, [clearMessages]);
 
   return (
-    <div className="h-screen flex flex-col bg-[#E2E6ED]">
-      <div className="bg-[#012169] px-6 py-3.5 flex items-center justify-between">
+    <div className="h-screen flex flex-col bg-neutral-100">
+      <div className="bg-brand-500 px-6 py-3.5 flex items-center justify-between">
         <h1 className="text-lg font-bold text-white">AI Chat</h1>
         <ModelSelector
           selectedModel={selectedModel}

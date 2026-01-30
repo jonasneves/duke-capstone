@@ -50,7 +50,7 @@ export function UserMenu({ user, onLogout, onClearCache }: UserMenuProps) {
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Open user menu"
         aria-expanded={isOpen}
-        className="group flex items-center gap-0 group-hover:gap-3 bg-white/80 backdrop-blur-md border border-neutral-200 rounded-full px-2 py-2 group-hover:pr-4 hover:bg-white transition-all duration-300 shadow-sm overflow-hidden"
+        className="group flex items-center gap-0 group-hover:gap-2.5 bg-white/80 backdrop-blur-md border border-neutral-200 rounded-full p-1 group-hover:pl-1.5 group-hover:pr-4 hover:bg-white transition-all duration-300 shadow-sm overflow-hidden"
       >
         <img
           src={user.avatar_url}

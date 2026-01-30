@@ -46,8 +46,8 @@ export function MessageList({ messages }: MessageListProps) {
     >
       {messages.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-full text-center px-8">
-          <div className="w-20 h-20 bg-[#00539B]/10 rounded-3xl flex items-center justify-center mb-6">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#00539B]">
+          <div className="w-20 h-20 bg-brand-600/10 rounded-3xl flex items-center justify-center mb-6">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-brand-600">
               <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
             </svg>
           </div>

@@ -10,7 +10,7 @@ export const MessageBubble = memo(({ message, style }: MessageBubbleProps) => {
   if (message.role === 'user') {
     return (
       <div style={style} className="flex justify-end" data-role={message.role}>
-        <div className="px-5 py-3 rounded-2xl rounded-br-sm bg-[#00539B] text-white text-[15px] leading-relaxed max-w-[85%] shadow-sm">
+        <div className="px-5 py-3 rounded-2xl rounded-br-sm bg-brand-600 text-white text-[15px] leading-relaxed max-w-[85%] shadow-sm">
           {message.content}
         </div>
       </div>
@@ -20,8 +20,8 @@ export const MessageBubble = memo(({ message, style }: MessageBubbleProps) => {
   if (message.role === 'assistant') {
     return (
       <div style={style} className="flex gap-3" data-role={message.role}>
-        <div className="w-8 h-8 rounded-full bg-[#00539B]/10 flex items-center justify-center flex-shrink-0">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-[#00539B]">
+        <div className="w-8 h-8 rounded-full bg-brand-600/10 flex items-center justify-center flex-shrink-0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-brand-600">
             <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
           </svg>
         </div>
