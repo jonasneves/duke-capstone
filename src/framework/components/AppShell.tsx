@@ -59,15 +59,18 @@ export function AppShell({
       }));
       setApps(appData);
 
-      for (let i = 0; i < appDirs.length; i++) {
-        await new Promise(resolve => setTimeout(resolve, i * 100));
-        const manifest = await api.getManifest(appDirs[i].path);
-        if (manifest) {
-          setApps(prev => prev.map(app =>
-            app.name === appDirs[i].name ? { ...app, manifest } : app
-          ));
-        }
-      }
+      // Load all manifests in parallel for better performance
+      const manifestPromises = appDirs.map(async (dir: AppDirectory) => {
+        const manifest = await api.getManifest(dir.path);
+        return { name: dir.name, manifest };
+      });
+
+      const manifestResults = await Promise.all(manifestPromises);
+
+      setApps(prev => prev.map(app => {
+        const result = manifestResults.find(r => r.name === app.name);
+        return result?.manifest ? { ...app, manifest: result.manifest } : app;
+      }));
 
       setLoading(false);
     } catch (err: any) {

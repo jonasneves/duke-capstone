@@ -45,6 +45,7 @@ export function AppCard({ appName, manifest, path, onLaunch, version }: AppCardP
           <img
             src={manifest.thumbnail}
             alt={manifest.name}
+            loading="lazy"
             className="w-full h-full object-cover"
             onError={(e) => { e.currentTarget.style.display = 'none'; }}
           />

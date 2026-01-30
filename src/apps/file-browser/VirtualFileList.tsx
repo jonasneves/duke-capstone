@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, memo } from 'react';
 import { FileListItem } from './FileListItem';
 import type { FileItem } from './types';
 
@@ -9,6 +9,31 @@ interface VirtualFileListProps {
 
 const ITEM_HEIGHT = 56; // Height of each file item in pixels
 const OVERSCAN = 5; // Number of items to render outside viewport
+
+// Memoized wrapper to prevent style recreation breaking FileListItem memoization
+const VirtualFileListItem = memo(function VirtualFileListItem({
+  file,
+  index,
+  onNavigate
+}: {
+  file: FileItem;
+  index: number;
+  onNavigate: (path: string) => void;
+}) {
+  return (
+    <FileListItem
+      file={file}
+      onNavigate={onNavigate}
+      style={{
+        position: 'absolute',
+        top: index * ITEM_HEIGHT,
+        left: 0,
+        right: 0,
+        height: ITEM_HEIGHT
+      }}
+    />
+  );
+});
 
 export function VirtualFileList({ files, onNavigate }: VirtualFileListProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -71,17 +96,11 @@ export function VirtualFileList({ files, onNavigate }: VirtualFileListProps) {
         {visibleFiles.map((file, index) => {
           const actualIndex = startIndex + index;
           return (
-            <FileListItem
+            <VirtualFileListItem
               key={file.path}
               file={file}
+              index={actualIndex}
               onNavigate={onNavigate}
-              style={{
-                position: 'absolute',
-                top: actualIndex * ITEM_HEIGHT,
-                left: 0,
-                right: 0,
-                height: ITEM_HEIGHT
-              }}
             />
           );
         })}

@@ -41,18 +41,27 @@ export const useAnalyticsStore = create<AnalyticsState>()((set, get) => ({
       data,
       timestamp: Date.now()
     };
-    set(state => ({ events: [...state.events.slice(-99), event] }));
+    set(state => {
+      const newEvents = [...state.events, event];
+      return { events: newEvents.length > 100 ? newEvents.slice(-100) : newEvents };
+    });
     console.log('[Analytics]', type, data);
   },
 
   logError: (error) => {
-    set(state => ({ errors: [...state.errors.slice(-49), error] }));
+    set(state => {
+      const newErrors = [...state.errors, error];
+      return { errors: newErrors.length > 50 ? newErrors.slice(-50) : newErrors };
+    });
     console.error('[Error]', error);
   },
 
   trackMetric: (app, metric, value) => {
     const entry: MetricEntry = { app, metric, value, timestamp: Date.now() };
-    set(state => ({ metrics: [...state.metrics.slice(-199), entry] }));
+    set(state => {
+      const newMetrics = [...state.metrics, entry];
+      return { metrics: newMetrics.length > 200 ? newMetrics.slice(-200) : newMetrics };
+    });
   },
 
   getMetrics: (app) => {

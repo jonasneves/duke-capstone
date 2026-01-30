@@ -2,12 +2,12 @@ import { useCallback } from 'react';
 import type { GitHubFile, GitHubDirectory } from '../types';
 
 interface GitHubAPIHook {
-  getFile: (path: string) => Promise<GitHubFile>;
-  updateFile: (path: string, content: string, sha: string, message?: string) => Promise<any>;
-  createFile: (path: string, content: string, message?: string) => Promise<any>;
-  deleteFile: (path: string, sha: string, message?: string) => Promise<any>;
-  listDirectory: (path?: string) => Promise<GitHubDirectory[]>;
-  getManifest: (appPath: string) => Promise<any>;
+  getFile: (path: string, signal?: AbortSignal) => Promise<GitHubFile>;
+  updateFile: (path: string, content: string, sha: string, message?: string, signal?: AbortSignal) => Promise<any>;
+  createFile: (path: string, content: string, message?: string, signal?: AbortSignal) => Promise<any>;
+  deleteFile: (path: string, sha: string, message?: string, signal?: AbortSignal) => Promise<any>;
+  listDirectory: (path?: string, signal?: AbortSignal) => Promise<GitHubDirectory[]>;
+  getManifest: (appPath: string, signal?: AbortSignal) => Promise<any>;
   encodeContent: (content: string) => string;
   decodeContent: (base64Content: string) => string;
 }
@@ -40,9 +40,10 @@ export function createGitHubAPIHook(
       return decodeURIComponent(escape(atob(base64Content)));
     }, []);
 
-    const request = useCallback(async (path: string, options: RequestInit = {}) => {
+    const request = useCallback(async (path: string, options: RequestInit = {}, signal?: AbortSignal) => {
       const response = await fetch(`${baseUrl}/contents/${path}`, {
         ...options,
+        signal: signal || options.signal,
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/vnd.github.v3+json',
@@ -61,7 +62,7 @@ export function createGitHubAPIHook(
       return response.json();
     }, [baseUrl, token]);
 
-    const getFile = useCallback(async (path: string): Promise<GitHubFile> => {
+    const getFile = useCallback(async (path: string, signal?: AbortSignal): Promise<GitHubFile> => {
       const cached = getCache(owner, repo, path);
       if (cached) {
         return {
@@ -71,7 +72,7 @@ export function createGitHubAPIHook(
         };
       }
 
-      const data = await request(path);
+      const data = await request(path, {}, signal);
       const result: GitHubFile = {
         content: decodeContent(data.content),
         sha: data.sha,
@@ -88,7 +89,8 @@ export function createGitHubAPIHook(
       path: string,
       content: string,
       sha: string,
-      message?: string
+      message?: string,
+      signal?: AbortSignal
     ) => {
       const result = await request(path, {
         method: 'PUT',
@@ -98,7 +100,7 @@ export function createGitHubAPIHook(
           content: encodeContent(content),
           sha
         })
-      });
+      }, signal);
 
       invalidateCache(owner, repo, path);
       return result;
@@ -107,7 +109,8 @@ export function createGitHubAPIHook(
     const createFile = useCallback(async (
       path: string,
       content: string,
-      message?: string
+      message?: string,
+      signal?: AbortSignal
     ) => {
       return request(path, {
         method: 'PUT',
@@ -116,13 +119,14 @@ export function createGitHubAPIHook(
           message: message || `Create ${path}`,
           content: encodeContent(content)
         })
-      });
+      }, signal);
     }, [request, encodeContent]);
 
     const deleteFile = useCallback(async (
       path: string,
       sha: string,
-      message?: string
+      message?: string,
+      signal?: AbortSignal
     ) => {
       const result = await request(path, {
         method: 'DELETE',
@@ -131,21 +135,25 @@ export function createGitHubAPIHook(
           message: message || `Delete ${path}`,
           sha
         })
-      });
+      }, signal);
 
       invalidateCache(owner, repo, path);
       return result;
     }, [owner, repo, request, invalidateCache]);
 
-    const listDirectory = useCallback(async (path: string = ''): Promise<GitHubDirectory[]> => {
-      return request(path);
+    const listDirectory = useCallback(async (path: string = '', signal?: AbortSignal): Promise<GitHubDirectory[]> => {
+      return request(path, {}, signal);
     }, [request]);
 
-    const getManifest = useCallback(async (appPath: string) => {
+    const getManifest = useCallback(async (appPath: string, signal?: AbortSignal) => {
       try {
-        const file = await getFile(`${appPath}/manifest.json`);
+        const file = await getFile(`${appPath}/manifest.json`, signal);
         return JSON.parse(file.content);
-      } catch {
+      } catch (err: any) {
+        // Don't report aborted requests as errors
+        if (err.name === 'AbortError') {
+          throw err;
+        }
         return null;
       }
     }, [getFile]);

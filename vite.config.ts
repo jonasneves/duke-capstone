@@ -25,10 +25,32 @@ export default defineConfig(({ mode }) => ({
         main: path.resolve(__dirname, 'index-react.html')
       },
       output: {
-        manualChunks: {
-          'vendor': ['react', 'react-dom'],
-          'ui': ['lucide-react'],
-          'state': ['zustand']
+        manualChunks: (id) => {
+          // Group by node_modules
+          if (id.includes('node_modules')) {
+            // Core React libraries
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'react-vendor';
+            }
+            // Router
+            if (id.includes('react-router')) {
+              return 'router';
+            }
+            // Markdown renderer (heavy library)
+            if (id.includes('marked')) {
+              return 'markdown';
+            }
+            // Icons (large library)
+            if (id.includes('lucide-react')) {
+              return 'icons';
+            }
+            // State management
+            if (id.includes('zustand')) {
+              return 'state';
+            }
+            // Other vendor libraries
+            return 'vendor';
+          }
         }
       }
     },

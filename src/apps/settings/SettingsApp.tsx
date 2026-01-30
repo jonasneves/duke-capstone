@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Settings as SettingsIcon, GitBranch, Package } from 'lucide-react';
 import { useAuthStore, useCacheStore, useAnalyticsStore } from '@/stores';
@@ -89,8 +90,8 @@ export default function SettingsApp() {
     }
   };
 
-  // Calculate storage usage
-  const getStorageSize = () => {
+  // Calculate storage usage (memoized to avoid blocking UI on every render)
+  const storageUsed = useMemo(() => {
     let total = 0;
     for (let key in localStorage) {
       if (localStorage.hasOwnProperty(key)) {
@@ -98,9 +99,8 @@ export default function SettingsApp() {
       }
     }
     return total / 1024; // Convert to KB
-  };
+  }, []); // Empty deps - only calculate once per mount
 
-  const storageUsed = getStorageSize();
   const storageLimit = 5 * 1024; // 5MB typical limit
 
   return (
@@ -128,6 +128,7 @@ export default function SettingsApp() {
               <img
                 src={user.avatar_url}
                 alt={user.login}
+                loading="lazy"
                 className="w-16 h-16 rounded-full ring-2 ring-neutral-200"
               />
             ) : (

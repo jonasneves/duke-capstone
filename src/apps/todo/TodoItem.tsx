@@ -35,4 +35,4 @@ export const TodoItem = memo(function TodoItem({ todo, onToggle, onDelete }: Tod
       </button>
     </div>
   );
-}
+});

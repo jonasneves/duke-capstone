@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import { MessageBubble } from './MessageBubble';
 import type { Message } from './types';
 
@@ -6,9 +6,20 @@ interface MessageListProps {
   messages: Message[];
 }
 
+const VIRTUALIZATION_THRESHOLD = 50;
+const RENDER_WINDOW_SIZE = 100;
+
 export function MessageList({ messages }: MessageListProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const shouldAutoScrollRef = useRef(true);
+
+  // Only render recent messages when list gets too long (performance optimization)
+  const visibleMessages = useMemo(() => {
+    if (messages.length <= VIRTUALIZATION_THRESHOLD) {
+      return messages;
+    }
+    return messages.slice(-RENDER_WINDOW_SIZE);
+  }, [messages]);
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -47,7 +58,12 @@ export function MessageList({ messages }: MessageListProps) {
         </div>
       ) : (
         <div className="space-y-4">
-          {messages.map((message, index) => (
+          {messages.length > VIRTUALIZATION_THRESHOLD && (
+            <div className="text-center text-xs text-neutral-400 py-2">
+              Showing last {RENDER_WINDOW_SIZE} of {messages.length} messages
+            </div>
+          )}
+          {visibleMessages.map((message, index) => (
             <MessageBubble
               key={message.id || index}
               message={message}

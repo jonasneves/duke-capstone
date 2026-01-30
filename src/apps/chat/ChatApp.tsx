@@ -51,10 +51,13 @@ export default function ChatApp() {
         },
         body: JSON.stringify({
           model: selectedModel,
-          messages: [...messages, { role: 'user', content }].map(m => ({
-            role: m.role,
-            content: m.content
-          })),
+          // Only send last 20 messages to avoid bandwidth waste (10 exchanges)
+          messages: [...messages, { role: 'user', content }]
+            .slice(-20)
+            .map(m => ({
+              role: m.role,
+              content: m.content
+            })),
           temperature: 0.7,
           max_tokens: 1000
         })

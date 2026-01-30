@@ -48,6 +48,7 @@ export function UserMenu({ user, onLogout, onClearCache }: UserMenuProps) {
         <img
           src={user.avatar_url}
           alt={user.login}
+          loading="lazy"
           className="w-8 h-8 rounded-full ring-2 ring-white"
         />
         <span className="text-sm font-medium text-neutral-900">{user.name || user.login}</span>
