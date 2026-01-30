@@ -34,7 +34,7 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
 
   return (
     <div className="px-6 py-5 bg-white border-t border-neutral-200">
-      <div className="flex items-center gap-2 pl-5 pr-2 py-2 bg-neutral-50 border border-neutral-200 rounded-[28px] transition-all focus-within:border-brand-600 focus-within:shadow-[0_0_0_3px_rgba(44,79,124,0.1)]">
+      <div className="flex items-center gap-2 pl-5 pr-2 py-2 bg-neutral-50 border border-neutral-200 rounded-[28px] transition-all duration-100 focus-within:border-brand-600 focus-within:shadow-[0_0_0_3px_rgba(44,79,124,0.1)]">
         <input
           ref={inputRef}
           type="text"
@@ -50,7 +50,7 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
           onClick={handleSend}
           disabled={disabled || !input.trim()}
           id="send-btn"
-          className="w-10 h-10 p-0 flex items-center justify-center bg-brand-600 hover:bg-brand-700 text-white rounded-full transition-all disabled:bg-neutral-300 disabled:text-neutral-500 disabled:cursor-not-allowed flex-shrink-0"
+          className="w-10 h-10 p-0 flex items-center justify-center bg-brand-600 hover:bg-brand-700 text-white rounded-full transition-all duration-100 disabled:bg-neutral-300 disabled:text-neutral-500 disabled:cursor-not-allowed flex-shrink-0"
           aria-label="Send message"
         >
           <ArrowUp size={18} />

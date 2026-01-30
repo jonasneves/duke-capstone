@@ -7,6 +7,7 @@ export type {
   GitHubDirectory
 } from './types';
 export type { ErrorLog, PerformanceMetric } from './stores/createAnalyticsStore';
+export type { UserMenuItem } from './contexts/UserMenuContext';
 
 // Store creators
 export { createAuthStore } from './stores/createAuthStore';
@@ -15,6 +16,9 @@ export { createAnalyticsStore } from './stores/createAnalyticsStore';
 
 // Hook creators
 export { createGitHubAPIHook } from './hooks/createGitHubAPI';
+
+// Contexts
+export { UserMenuProvider, useUserMenu } from './contexts/UserMenuContext';
 
 // Components
 export { OAuth } from './components/OAuth';

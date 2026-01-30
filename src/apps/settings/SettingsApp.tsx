@@ -55,7 +55,7 @@ function StorageBar({ label, used, total, unit = 'KB' }: { label: string; used: 
       </div>
       <div className="h-2 bg-neutral-100 rounded-full overflow-hidden">
         <div
-          className="h-full bg-brand-600 rounded-full transition-all duration-300"
+          className="h-full bg-brand-600 rounded-full transition-all duration-150"
           style={{ width: `${percentage}%` }}
         />
       </div>

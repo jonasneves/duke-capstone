@@ -39,7 +39,7 @@ export function AppCard({ appName, manifest, path, onLaunch, version }: AppCardP
   const versionWarning = checkVersionCompatibility(manifest, version);
 
   return (
-    <div className="bg-white rounded-xl border border-neutral-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden group flex flex-col h-full">
+    <div className="bg-white rounded-xl border border-neutral-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 overflow-hidden group flex flex-col h-full">
       <div className={`w-full bg-gradient-to-br from-brand-50 to-neutral-50 flex items-center justify-center ${manifest.thumbnail ? 'h-32' : 'h-20'}`}>
         {manifest.thumbnail ? (
           <img
@@ -78,10 +78,10 @@ export function AppCard({ appName, manifest, path, onLaunch, version }: AppCardP
         <button
           onClick={() => onLaunch(path, manifest.name)}
           aria-label={`Launch ${manifest.name} app`}
-          className="inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-brand-600 to-brand-700 hover:from-brand-700 hover:to-brand-800 text-white px-3 py-2 rounded-lg font-medium text-xs transition-all duration-200 group-hover:gap-2 mt-auto"
+          className="inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-brand-600 to-brand-700 hover:from-brand-700 hover:to-brand-800 text-white px-3 py-2 rounded-lg font-medium text-xs transition-all duration-150 group-hover:gap-2 mt-auto"
         >
           Launch App
-          <ArrowRight size={14} className="transition-transform duration-200" />
+          <ArrowRight size={14} className="transition-transform duration-150" />
         </button>
       </div>
     </div>

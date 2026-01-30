@@ -1,12 +1,20 @@
 import { useState, useCallback, useEffect } from 'react';
+import { Trash2 } from 'lucide-react';
 import { MessageList } from './MessageList';
 import { ChatInput } from './ChatInput';
-import { ModelSelector } from './ModelSelector';
 import { useStreamAccumulator } from '@/hooks/useStreamAccumulator';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { usePerformanceMonitor } from '@/hooks/usePerformanceMonitor';
 import { useAuthStore } from '@/stores';
+import { useUserMenu } from '@/framework';
 import type { Message, Model } from './types';
+
+const MODELS: { value: Model; label: string }[] = [
+  { value: 'gpt-4o', label: 'GPT-4o' },
+  { value: 'gpt-4o-mini', label: 'GPT-4o Mini' },
+  { value: 'meta-llama-3.1-70b-instruct', label: 'Llama 3.1 70B' },
+  { value: 'mistral-large', label: 'Mistral Large' }
+];
 
 export default function ChatApp() {
   const token = useAuthStore(state => state.token);
@@ -14,10 +22,55 @@ export default function ChatApp() {
   const [messages, setMessages, clearMessages] = useLocalStorage<Message[]>('chat_history', []);
   const [selectedModel, setSelectedModel] = useLocalStorage<Model>('chat_model', 'gpt-4o-mini');
   const [isLoading, setIsLoading] = useState(false);
+  const { setCustomItems, clearCustomItems } = useUserMenu();
 
   useEffect(() => {
     endTimer('ttfr');
   }, [endTimer]);
+
+  const handleClearChat = useCallback(() => {
+    if (confirm('Clear all chat history?')) {
+      clearMessages();
+    }
+  }, [clearMessages]);
+
+  useEffect(() => {
+    setCustomItems([
+      {
+        id: 'model-selector',
+        label: 'Model',
+        onClick: () => {},
+        component: (
+          <div className="px-4 py-3">
+            <label htmlFor="chat-model" className="block text-xs font-medium text-neutral-500 mb-2">
+              AI Model
+            </label>
+            <select
+              id="chat-model"
+              value={selectedModel}
+              onChange={(e) => setSelectedModel(e.target.value as Model)}
+              className="w-full px-3 py-2 text-sm bg-white border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+            >
+              {MODELS.map(model => (
+                <option key={model.value} value={model.value}>
+                  {model.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        )
+      },
+      {
+        id: 'clear-chat',
+        label: 'Clear Chat',
+        icon: Trash2,
+        onClick: handleClearChat,
+        variant: 'danger' as const
+      }
+    ]);
+
+    return () => clearCustomItems();
+  }, [selectedModel, setSelectedModel, handleClearChat, setCustomItems, clearCustomItems]);
 
   // RAF batching for message updates
   const handleFlush = useCallback((newMessages: Message[]) => {
@@ -80,21 +133,10 @@ export default function ChatApp() {
     }
   }, [token, selectedModel, messages, isLoading, addMessage, startTimer, endTimer]);
 
-  const handleClearChat = useCallback(() => {
-    if (confirm('Clear all chat history?')) {
-      clearMessages();
-    }
-  }, [clearMessages]);
-
   return (
     <div className="h-screen flex flex-col bg-neutral-100">
-      <div className="bg-brand-500 px-6 py-3.5 flex items-center justify-between">
+      <div className="bg-brand-500 px-6 py-3.5">
         <h1 className="text-lg font-bold text-white">AI Chat</h1>
-        <ModelSelector
-          selectedModel={selectedModel}
-          onModelChange={setSelectedModel}
-          onClearChat={handleClearChat}
-        />
       </div>
 
       <div className="flex-1 flex justify-center p-6 overflow-hidden">
