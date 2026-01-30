@@ -60,7 +60,7 @@ export function UserMenu({ user, onLogout, onClearCache }: UserMenuProps) {
           loading="lazy"
           className="w-8 h-8 rounded-full ring-2 ring-white flex-shrink-0"
         />
-        <span className="text-base font-semibold text-neutral-700 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-200 scale-x-0 group-hover:scale-x-100 origin-left">{user.name || user.login}</span>
+        <span className="text-sm font-medium text-neutral-800 whitespace-nowrap w-0 group-hover:w-auto opacity-0 group-hover:opacity-100 transition-all duration-200">{user.name || user.login}</span>
       </button>
 
       <div className={`absolute top-14 right-0 bg-white border border-neutral-200 rounded-2xl shadow-xl min-w-[200px] overflow-hidden transition-all duration-100 ${isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
