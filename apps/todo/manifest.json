@@ -1,0 +1,8 @@
+{
+  "name": "Todo App",
+  "description": "Task management with pill-toggle filtering",
+  "version": "1.0.0",
+  "tech": ["React", "TypeScript", "localStorage"],
+  "minLauncherVersion": "1.0.0",
+  "reactRoute": "/apps/todo"
+}
