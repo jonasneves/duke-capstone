@@ -2,7 +2,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { Rocket } from 'lucide-react';
 import { AppCard } from './AppCard';
 import { UserMenu } from './UserMenu';
+import { PillToggle } from './PillToggle';
 import type { FrameworkConfig, User, AppManifest } from '../types';
+
+type FilterType = 'all' | 'productivity' | 'content';
 
 interface AppShellProps {
   config: FrameworkConfig;
@@ -31,6 +34,7 @@ export function AppShell({
   const [apps, setApps] = useState<AppData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<FilterType>('all');
 
   useEffect(() => {
     loadApps();
@@ -70,6 +74,20 @@ export function AppShell({
       onNavigate(manifest.reactRoute);
     }
   }, [apps, onTrack, onNavigate]);
+
+  const getAppCategory = (appName: string): FilterType => {
+    const productivityApps = ['todo', 'dashboard', 'settings'];
+    const contentApps = ['cms', 'file-browser'];
+
+    if (productivityApps.includes(appName)) return 'productivity';
+    if (contentApps.includes(appName)) return 'content';
+    return 'all';
+  };
+
+  const filteredApps = apps.filter(app => {
+    if (filter === 'all') return true;
+    return getAppCategory(app.name) === filter;
+  });
 
   if (loading && apps.length === 0) {
     return (
@@ -130,8 +148,20 @@ export function AppShell({
         </header>
 
         <div className="container pb-20">
+          <div className="flex justify-center mb-8">
+            <PillToggle
+              options={[
+                { value: 'all', label: 'All' },
+                { value: 'productivity', label: 'Productivity' },
+                { value: 'content', label: 'Content' },
+              ]}
+              value={filter}
+              onChange={(value) => setFilter(value as FilterType)}
+            />
+          </div>
+
           <div className="grid">
-            {apps.map(app => (
+            {filteredApps.map(app => (
               <AppCard
                 key={app.name}
                 appName={app.name}
@@ -141,6 +171,12 @@ export function AppShell({
               />
             ))}
           </div>
+
+          {filteredApps.length === 0 && (
+            <div className="text-center py-16">
+              <p className="text-neutral-500">No apps in this category</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

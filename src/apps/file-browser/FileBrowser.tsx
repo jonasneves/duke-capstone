@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Breadcrumb } from './Breadcrumb';
 import { VirtualFileList } from './VirtualFileList';
 import { useGitHubAPI } from '@/hooks';
@@ -9,7 +8,6 @@ import { sortFiles } from './utils';
 import type { FileItem } from './types';
 
 export default function FileBrowser() {
-  const navigate = useNavigate();
   const api = useGitHubAPI(AppConfig.repository.owner, AppConfig.repository.name);
   const { startTimer, endTimer } = usePerformanceMonitor('file-browser');
   const [currentPath, setCurrentPath] = useState('');
@@ -42,10 +40,6 @@ export default function FileBrowser() {
   const handleNavigate = useCallback((path: string) => {
     setCurrentPath(path);
   }, []);
-
-  const handleBack = () => {
-    navigate('/');
-  };
 
   if (isLoading && files.length === 0) {
     return (
@@ -84,14 +78,8 @@ export default function FileBrowser() {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      <div className="bg-white border-b border-neutral-200 px-6 py-4 flex items-center justify-between">
+      <div className="bg-white border-b border-neutral-200 px-6 py-4">
         <h2 className="text-2xl font-semibold text-neutral-900">File Browser</h2>
-        <button
-          className="px-4 py-2 bg-white hover:bg-neutral-100 border border-neutral-300 text-neutral-700 rounded-lg font-medium text-sm transition-colors"
-          onClick={handleBack}
-        >
-          ← Back to Gallery
-        </button>
       </div>
 
       <div className="max-w-5xl mx-auto px-6 py-8">

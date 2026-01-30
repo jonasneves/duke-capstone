@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, Circle, ListTodo } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { PillToggle } from './PillToggle';
@@ -8,7 +7,6 @@ import { TodoItem } from './TodoItem';
 import type { Todo, FilterType } from './types';
 
 export default function TodoApp() {
-  const navigate = useNavigate();
   const [todos, setTodos] = useLocalStorage<Todo[]>('todos', []);
   const [filter, setFilter] = useState<FilterType>('all');
 
