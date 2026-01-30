@@ -44,7 +44,7 @@ function AppWrapper({ appName, children }: { appName: string; children: React.Re
         if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
           return;
         }
-        navigate('/gallery');
+        navigate('/gallery', { replace: true });
       }
     };
 
